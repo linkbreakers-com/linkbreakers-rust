@@ -164,6 +164,7 @@ src/models/list_page_themes_response.rs
 src/models/list_qrcode_templates_response.rs
 src/models/list_response.rs
 src/models/list_tags_response.rs
+src/models/list_visitor_attribute_keys_response.rs
 src/models/list_visitors_csv_response.rs
 src/models/list_visitors_json_response.rs
 src/models/list_visitors_response.rs
@@ -258,6 +259,10 @@ src/models/visit_type_condition_payload.rs
 src/models/visit_type_condition_trace_data.rs
 src/models/visit_type_condition_trace_option.rs
 src/models/visitor.rs
+src/models/visitor_data_condition_option.rs
+src/models/visitor_data_condition_payload.rs
+src/models/visitor_data_condition_trace_data.rs
+src/models/visitor_data_condition_trace_option.rs
 src/models/visitor_event.rs
 src/models/visitor_input.rs
 src/models/visitor_link.rs
