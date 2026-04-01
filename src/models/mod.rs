@@ -250,6 +250,8 @@ pub mod link_setting;
 pub use self::link_setting::LinkSetting;
 pub mod link_sort_field;
 pub use self::link_sort_field::LinkSortField;
+pub mod link_view;
+pub use self::link_view::LinkView;
 pub mod links_service_update_body;
 pub use self::links_service_update_body::LinksServiceUpdateBody;
 pub mod list_custom_domains_response;

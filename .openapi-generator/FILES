@@ -151,6 +151,7 @@ src/models/lead_score_breakdown.rs
 src/models/link.rs
 src/models/link_setting.rs
 src/models/link_sort_field.rs
+src/models/link_view.rs
 src/models/links_service_update_body.rs
 src/models/list_custom_domains_response.rs
 src/models/list_directories_response.rs
