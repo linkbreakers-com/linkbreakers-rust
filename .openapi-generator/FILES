@@ -250,6 +250,7 @@ src/models/update_workspace_origin_purpose_request.rs
 src/models/update_workspace_request.rs
 src/models/v_card_data.rs
 src/models/v_card_payload.rs
+src/models/v_card_social_link.rs
 src/models/validation_instructions_custom_domain_response.rs
 src/models/validation_instructions_custom_domain_response_validation.rs
 src/models/validation_instructions_custom_domain_response_validation_type.rs

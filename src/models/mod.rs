@@ -446,6 +446,8 @@ pub mod v_card_data;
 pub use self::v_card_data::VCardData;
 pub mod v_card_payload;
 pub use self::v_card_payload::VCardPayload;
+pub mod v_card_social_link;
+pub use self::v_card_social_link::VCardSocialLink;
 pub mod validation_instructions_custom_domain_response;
 pub use self::validation_instructions_custom_domain_response::ValidationInstructionsCustomDomainResponse;
 pub mod validation_instructions_custom_domain_response_validation;

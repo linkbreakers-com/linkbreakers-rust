@@ -12,22 +12,16 @@ use crate::models;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct SocialLinkButton {
-    #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
-    pub id: Option<String>,
-    #[serde(rename = "order", skip_serializing_if = "Option::is_none")]
-    pub order: Option<i32>,
+pub struct VCardSocialLink {
     #[serde(rename = "platform", skip_serializing_if = "Option::is_none")]
     pub platform: Option<String>,
     #[serde(rename = "url", skip_serializing_if = "Option::is_none")]
     pub url: Option<String>,
 }
 
-impl SocialLinkButton {
-    pub fn new() -> SocialLinkButton {
-        SocialLinkButton {
-            id: None,
-            order: None,
+impl VCardSocialLink {
+    pub fn new() -> VCardSocialLink {
+        VCardSocialLink {
             platform: None,
             url: None,
         }
