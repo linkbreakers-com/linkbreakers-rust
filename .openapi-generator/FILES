@@ -16,6 +16,7 @@ src/apis/mod.rs
 src/apis/page_themes_api.rs
 src/apis/qr_code_designs_api.rs
 src/apis/qr_code_templates_api.rs
+src/apis/slack_integrations_api.rs
 src/apis/tags_api.rs
 src/apis/time_series_api.rs
 src/apis/visitors_api.rs
@@ -32,6 +33,8 @@ src/models/background_options.rs
 src/models/canvas_position.rs
 src/models/check_custom_domain_response.rs
 src/models/client_redirect_payload.rs
+src/models/complete_slack_o_auth_request.rs
+src/models/complete_slack_o_auth_response.rs
 src/models/contact_card_trace_card.rs
 src/models/contact_card_trace_data.rs
 src/models/container_config.rs
@@ -135,6 +138,8 @@ src/models/get_link_setting_response.rs
 src/models/get_media_response.rs
 src/models/get_page_theme_response.rs
 src/models/get_qrcode_design_response.rs
+src/models/get_slack_integration_response.rs
+src/models/get_slack_o_auth_url_response.rs
 src/models/get_webhook_response.rs
 src/models/get_workflow_step_response.rs
 src/models/get_workspace_token_response.rs
@@ -164,6 +169,7 @@ src/models/list_media_response.rs
 src/models/list_page_themes_response.rs
 src/models/list_qrcode_templates_response.rs
 src/models/list_response.rs
+src/models/list_slack_channels_response.rs
 src/models/list_tags_response.rs
 src/models/list_visitor_attribute_keys_response.rs
 src/models/list_visitors_csv_response.rs
@@ -216,6 +222,9 @@ src/models/settings_service_update_link_setting_body.rs
 src/models/shape.rs
 src/models/shortlink_availability_response.rs
 src/models/shortlink_random_response.rs
+src/models/slack_channel.rs
+src/models/slack_integration.rs
+src/models/slack_integration_status.rs
 src/models/social_link_button.rs
 src/models/social_link_trace_button.rs
 src/models/social_links_display_style.rs
@@ -227,6 +236,7 @@ src/models/specific_date_condition_trace_data.rs
 src/models/specific_date_condition_trace_option.rs
 src/models/specific_date_option.rs
 src/models/subscription_type.rs
+src/models/test_slack_integration_response.rs
 src/models/theme_color.rs
 src/models/theme_color_theme_color_type.rs
 src/models/time_of_day_condition_payload.rs
@@ -243,6 +253,8 @@ src/models/update_me_request.rs
 src/models/update_page_theme_response.rs
 src/models/update_qrcode_design_response.rs
 src/models/update_qrcode_template_response.rs
+src/models/update_slack_integration_request.rs
+src/models/update_slack_integration_response.rs
 src/models/update_webhook_response.rs
 src/models/update_workflow_step_response.rs
 src/models/update_workspace_origin_inquiry_request.rs
