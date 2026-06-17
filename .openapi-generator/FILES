@@ -107,6 +107,7 @@ src/models/device_type_condition_payload.rs
 src/models/device_type_condition_trace_data.rs
 src/models/device_type_condition_trace_option.rs
 src/models/device_type_condition_value.rs
+src/models/digest_frequency.rs
 src/models/directories_service_update_body.rs
 src/models/directory.rs
 src/models/dots_options.rs

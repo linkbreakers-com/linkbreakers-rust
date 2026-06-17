@@ -160,6 +160,8 @@ pub mod device_type_condition_trace_option;
 pub use self::device_type_condition_trace_option::DeviceTypeConditionTraceOption;
 pub mod device_type_condition_value;
 pub use self::device_type_condition_value::DeviceTypeConditionValue;
+pub mod digest_frequency;
+pub use self::digest_frequency::DigestFrequency;
 pub mod directories_service_update_body;
 pub use self::directories_service_update_body::DirectoriesServiceUpdateBody;
 pub mod directory;
