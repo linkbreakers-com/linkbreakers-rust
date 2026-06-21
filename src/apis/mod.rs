@@ -114,6 +114,7 @@ impl From<&str> for ContentType {
 pub mod custom_domains_api;
 pub mod directories_api;
 pub mod events_api;
+pub mod google_forms_integrations_api;
 pub mod integrations_service_api;
 pub mod link_settings_api;
 pub mod links_api;

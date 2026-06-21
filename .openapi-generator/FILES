@@ -7,6 +7,7 @@ src/apis/configuration.rs
 src/apis/custom_domains_api.rs
 src/apis/directories_api.rs
 src/apis/events_api.rs
+src/apis/google_forms_integrations_api.rs
 src/apis/integrations_service_api.rs
 src/apis/link_settings_api.rs
 src/apis/links_api.rs
@@ -33,6 +34,8 @@ src/models/background_options.rs
 src/models/canvas_position.rs
 src/models/check_custom_domain_response.rs
 src/models/client_redirect_payload.rs
+src/models/complete_google_forms_o_auth_request.rs
+src/models/complete_google_forms_o_auth_response.rs
 src/models/complete_slack_o_auth_request.rs
 src/models/complete_slack_o_auth_response.rs
 src/models/contact_card_trace_card.rs
@@ -133,6 +136,9 @@ src/models/get_custom_domain_response.rs
 src/models/get_directory_response.rs
 src/models/get_events_time_series_request.rs
 src/models/get_events_time_series_response.rs
+src/models/get_google_form_fields_response.rs
+src/models/get_google_forms_integration_response.rs
+src/models/get_google_forms_o_auth_url_response.rs
 src/models/get_lead_score_explanation_response.rs
 src/models/get_link_response.rs
 src/models/get_link_setting_response.rs
@@ -144,6 +150,11 @@ src/models/get_slack_o_auth_url_response.rs
 src/models/get_webhook_response.rs
 src/models/get_workflow_step_response.rs
 src/models/get_workspace_token_response.rs
+src/models/google_form.rs
+src/models/google_form_field.rs
+src/models/google_forms_field_mapping.rs
+src/models/google_forms_integration.rs
+src/models/google_forms_integration_status.rs
 src/models/googlerpc_status.rs
 src/models/http_method.rs
 src/models/identify_request.rs
@@ -165,6 +176,7 @@ src/models/list_event_traces_response.rs
 src/models/list_events_csv_response.rs
 src/models/list_events_json_response.rs
 src/models/list_events_response.rs
+src/models/list_google_forms_response.rs
 src/models/list_links_response.rs
 src/models/list_media_response.rs
 src/models/list_page_themes_response.rs
@@ -237,6 +249,7 @@ src/models/specific_date_condition_trace_data.rs
 src/models/specific_date_condition_trace_option.rs
 src/models/specific_date_option.rs
 src/models/subscription_type.rs
+src/models/sync_google_forms_response.rs
 src/models/test_slack_integration_response.rs
 src/models/theme_color.rs
 src/models/theme_color_theme_color_type.rs
@@ -248,6 +261,8 @@ src/models/triggered_by.rs
 src/models/update_custom_domain_response.rs
 src/models/update_device_response.rs
 src/models/update_directory_response.rs
+src/models/update_google_forms_integration_request.rs
+src/models/update_google_forms_integration_response.rs
 src/models/update_link_response.rs
 src/models/update_link_setting_response.rs
 src/models/update_me_request.rs
