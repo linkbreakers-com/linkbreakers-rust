@@ -11,17 +11,17 @@
 use crate::models;
 use serde::{Deserialize, Serialize};
 
-/// PublicCreateQrcodeDesignResponse : PublicCreateQrcodeDesignResponse echoes the newly created design with generated metadata.
+/// ApplyQrcodeTemplateResponse : ApplyQrcodeTemplateResponse returns the updated QR code design after applying the template.
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct PublicCreateQrcodeDesignResponse {
+pub struct ApplyQrcodeTemplateResponse {
     #[serde(rename = "qrcodeDesign", skip_serializing_if = "Option::is_none")]
     pub qrcode_design: Option<Box<models::QrcodeDesign>>,
 }
 
-impl PublicCreateQrcodeDesignResponse {
-    /// PublicCreateQrcodeDesignResponse echoes the newly created design with generated metadata.
-    pub fn new() -> PublicCreateQrcodeDesignResponse {
-        PublicCreateQrcodeDesignResponse {
+impl ApplyQrcodeTemplateResponse {
+    /// ApplyQrcodeTemplateResponse returns the updated QR code design after applying the template.
+    pub fn new() -> ApplyQrcodeTemplateResponse {
+        ApplyQrcodeTemplateResponse {
             qrcode_design: None,
         }
     }
