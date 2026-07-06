@@ -111,6 +111,9 @@ impl From<&str> for ContentType {
     }
 }
 
+pub mod ai_assistant_api;
+pub mod analytics_dashboard_api;
+pub mod analytics_data_api;
 pub mod custom_domains_api;
 pub mod directories_api;
 pub mod events_api;
