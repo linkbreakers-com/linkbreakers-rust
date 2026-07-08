@@ -12,15 +12,15 @@ use crate::models;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct DeleteVisitorResponse {
-    #[serde(rename = "success", skip_serializing_if = "Option::is_none")]
-    pub success: Option<bool>,
+pub struct CreateThankYouLinkResponse {
+    #[serde(rename = "link", skip_serializing_if = "Option::is_none")]
+    pub link: Option<Box<models::Link>>,
 }
 
-impl DeleteVisitorResponse {
-    pub fn new() -> DeleteVisitorResponse {
-        DeleteVisitorResponse {
-            success: None,
+impl CreateThankYouLinkResponse {
+    pub fn new() -> CreateThankYouLinkResponse {
+        CreateThankYouLinkResponse {
+            link: None,
         }
     }
 }

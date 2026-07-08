@@ -11,25 +11,17 @@
 use crate::models;
 use serde::{Deserialize, Serialize};
 
-/// CreateLinkRequest : Request to create a new link.
+/// CreateThankYouLinkRequest : Request to create a new thank you page link.
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct CreateLinkRequest {
-    /// Enable conversion tracking by preserving lbid in redirect URL.
-    #[serde(rename = "conversionTracking", skip_serializing_if = "Option::is_none")]
-    pub conversion_tracking: Option<bool>,
+pub struct CreateThankYouLinkRequest {
     #[serde(rename = "customDomainId", skip_serializing_if = "Option::is_none")]
     pub custom_domain_id: Option<String>,
-    /// The destination URL to shorten. This field is required.
-    #[serde(rename = "destination")]
-    pub destination: String,
+    /// Optional description displayed on the thank you page.
+    #[serde(rename = "description", skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
     /// Directory to organize this link into. If empty, link is created at root level.
     #[serde(rename = "directoryId", skip_serializing_if = "Option::is_none")]
     pub directory_id: Option<String>,
-    #[serde(rename = "fallbackDestination", skip_serializing_if = "Option::is_none")]
-    pub fallback_destination: Option<String>,
-    /// Optional pre-generated UUID. If omitted, the system generates one.
-    #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
-    pub id: Option<String>,
     /// The lead goal definition for the link. This is a text field that can be used to describe the lead goal or purpose of the link.
     #[serde(rename = "leadGoalDefinition", skip_serializing_if = "Option::is_none")]
     pub lead_goal_definition: Option<String>,
@@ -53,21 +45,21 @@ pub struct CreateLinkRequest {
     /// List of tags to associate with the link. If a tag doesn't exist, it will be created.
     #[serde(rename = "tags", skip_serializing_if = "Option::is_none")]
     pub tags: Option<Vec<String>>,
+    /// Title displayed on the thank you page. This field is required.
+    #[serde(rename = "title")]
+    pub title: String,
     /// Wait for QR code generation to complete. Note: This makes the request slower compared to asynchronous generation.
     #[serde(rename = "waitForQrcode", skip_serializing_if = "Option::is_none")]
     pub wait_for_qrcode: Option<bool>,
 }
 
-impl CreateLinkRequest {
-    /// Request to create a new link.
-    pub fn new(destination: String) -> CreateLinkRequest {
-        CreateLinkRequest {
-            conversion_tracking: None,
+impl CreateThankYouLinkRequest {
+    /// Request to create a new thank you page link.
+    pub fn new(title: String) -> CreateThankYouLinkRequest {
+        CreateThankYouLinkRequest {
             custom_domain_id: None,
-            destination,
+            description: None,
             directory_id: None,
-            fallback_destination: None,
-            id: None,
             lead_goal_definition: None,
             lead_target_definition: None,
             metadata: None,
@@ -76,6 +68,7 @@ impl CreateLinkRequest {
             qrcode_template_id: None,
             shortlink: None,
             tags: None,
+            title,
             wait_for_qrcode: None,
         }
     }

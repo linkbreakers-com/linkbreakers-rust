@@ -81,6 +81,8 @@ src/models/create_media_request.rs
 src/models/create_media_response.rs
 src/models/create_qrcode_template_request.rs
 src/models/create_qrcode_template_response.rs
+src/models/create_thank_you_link_request.rs
+src/models/create_thank_you_link_response.rs
 src/models/create_webhook_request.rs
 src/models/create_webhook_response.rs
 src/models/create_workflow_step_response.rs
