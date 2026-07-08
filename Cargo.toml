@@ -1,6 +1,6 @@
 [package]
 name = "linkbreakers"
-version = "1.80.1"
+version = "1.81.2"
 edition = "2021"
 authors = ["Linkbreakers Team <support@linkbreakers.com>"]
 description = "Official Rust SDK for the Linkbreakers API"
