@@ -235,6 +235,8 @@ src/models/media_type.rs
 src/models/media_visibility.rs
 src/models/member.rs
 src/models/members_service_update_body.rs
+src/models/message_page_navigation_type.rs
+src/models/message_page_payload.rs
 src/models/mod.rs
 src/models/multi_link_button.rs
 src/models/multi_link_payload.rs
@@ -290,6 +292,7 @@ src/models/specific_date_option.rs
 src/models/subscription_type.rs
 src/models/sync_google_forms_response.rs
 src/models/test_slack_integration_response.rs
+src/models/thank_you_page_payload.rs
 src/models/theme_color.rs
 src/models/theme_color_theme_color_type.rs
 src/models/time_of_day_condition_payload.rs
