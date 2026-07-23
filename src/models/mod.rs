@@ -518,6 +518,8 @@ pub mod specific_date_condition_trace_option;
 pub use self::specific_date_condition_trace_option::SpecificDateConditionTraceOption;
 pub mod specific_date_option;
 pub use self::specific_date_option::SpecificDateOption;
+pub mod step_theme_override;
+pub use self::step_theme_override::StepThemeOverride;
 pub mod subscription_type;
 pub use self::subscription_type::SubscriptionType;
 pub mod sync_google_forms_response;
