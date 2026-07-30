@@ -34,9 +34,12 @@ src/models/action.rs
 src/models/add_workflow_step_relationship_response.rs
 src/models/ai_context_type.rs
 src/models/ai_display_message.rs
+src/models/ai_display_message_attachment.rs
 src/models/ai_get_conversation_response.rs
 src/models/ai_send_message_request.rs
 src/models/ai_send_message_response.rs
+src/models/ai_upload_file_request.rs
+src/models/ai_upload_file_response.rs
 src/models/analytics_dashboard.rs
 src/models/api_tag.rs
 src/models/apply_qrcode_template_request.rs
