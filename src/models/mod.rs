@@ -634,6 +634,8 @@ pub mod visitor_input;
 pub use self::visitor_input::VisitorInput;
 pub mod visitor_link;
 pub use self::visitor_link::VisitorLink;
+pub mod visitor_sort_field;
+pub use self::visitor_sort_field::VisitorSortField;
 pub mod visitor_trend_data_point;
 pub use self::visitor_trend_data_point::VisitorTrendDataPoint;
 pub mod visitors_service_update_body;

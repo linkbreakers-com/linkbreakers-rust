@@ -349,6 +349,7 @@ src/models/visitor_data_condition_trace_option.rs
 src/models/visitor_event.rs
 src/models/visitor_input.rs
 src/models/visitor_link.rs
+src/models/visitor_sort_field.rs
 src/models/visitor_trend_data_point.rs
 src/models/visitors_service_update_body.rs
 src/models/webhook.rs
