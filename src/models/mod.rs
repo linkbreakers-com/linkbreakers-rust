@@ -692,6 +692,8 @@ pub mod widget_tab;
 pub use self::widget_tab::WidgetTab;
 pub mod widget_tab_mode;
 pub use self::widget_tab_mode::WidgetTabMode;
+pub mod widget_tab_view;
+pub use self::widget_tab_view::WidgetTabView;
 pub mod widget_visualization;
 pub use self::widget_visualization::WidgetVisualization;
 pub mod workflow_issue;

@@ -378,6 +378,7 @@ src/models/widget_position.rs
 src/models/widget_size.rs
 src/models/widget_tab.rs
 src/models/widget_tab_mode.rs
+src/models/widget_tab_view.rs
 src/models/widget_visualization.rs
 src/models/workflow_issue.rs
 src/models/workflow_step.rs
