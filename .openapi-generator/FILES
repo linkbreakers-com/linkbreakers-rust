@@ -192,7 +192,7 @@ src/models/get_grouped_time_series_request.rs
 src/models/get_grouped_time_series_response.rs
 src/models/get_hour_of_day_distribution_request.rs
 src/models/get_hour_of_day_distribution_response.rs
-src/models/get_lead_score_explanation_response.rs
+src/models/get_lead_score_response.rs
 src/models/get_link_response.rs
 src/models/get_link_setting_response.rs
 src/models/get_media_response.rs
