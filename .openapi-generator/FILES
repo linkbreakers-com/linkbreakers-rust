@@ -168,6 +168,8 @@ src/models/form_field_type.rs
 src/models/form_payload.rs
 src/models/form_trace_data.rs
 src/models/form_trace_data_field.rs
+src/models/funnel_branch.rs
+src/models/funnel_step.rs
 src/models/generate_widget_summary_response.rs
 src/models/geo_data_point.rs
 src/models/get_attribute_distribution_request.rs
@@ -200,6 +202,8 @@ src/models/get_page_theme_response.rs
 src/models/get_qrcode_design_response.rs
 src/models/get_slack_integration_response.rs
 src/models/get_slack_o_auth_url_response.rs
+src/models/get_step_funnel_request.rs
+src/models/get_step_funnel_response.rs
 src/models/get_top_links_request.rs
 src/models/get_top_links_response.rs
 src/models/get_visitor_trends_request.rs
