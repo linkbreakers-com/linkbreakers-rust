@@ -31,7 +31,6 @@ src/apis/workspace_tokens_api.rs
 src/apis/workspaces_api.rs
 src/lib.rs
 src/models/action.rs
-src/models/add_workflow_step_relationship_response.rs
 src/models/agent_context_type.rs
 src/models/agent_display_message.rs
 src/models/agent_display_message_attachment.rs
@@ -62,6 +61,7 @@ src/models/complete_google_forms_o_auth_request.rs
 src/models/complete_google_forms_o_auth_response.rs
 src/models/complete_slack_o_auth_request.rs
 src/models/complete_slack_o_auth_response.rs
+src/models/connect_workflow_step_response.rs
 src/models/contact_card_trace_card.rs
 src/models/contact_card_trace_data.rs
 src/models/container_config.rs
@@ -148,6 +148,7 @@ src/models/device_type_condition_value.rs
 src/models/digest_frequency.rs
 src/models/directories_service_update_body.rs
 src/models/directory.rs
+src/models/disconnect_workflow_step_response.rs
 src/models/dots_options.rs
 src/models/dots_type.rs
 src/models/entry_access_trace_data.rs
@@ -291,7 +292,6 @@ src/models/qrcode_design_service_update_body.rs
 src/models/qrcode_template.rs
 src/models/qrcode_templates_service_update_qrcode_template_body.rs
 src/models/redirect_trace_data.rs
-src/models/remove_workflow_step_relationship_response.rs
 src/models/request_workspace_enrollment_request.rs
 src/models/resolve_step_collisions_response.rs
 src/models/response_format.rs
@@ -386,10 +386,11 @@ src/models/widget_tab_view.rs
 src/models/widget_visualization.rs
 src/models/workflow_issue.rs
 src/models/workflow_step.rs
+src/models/workflow_step_branch.rs
 src/models/workflow_step_kind.rs
 src/models/workflow_step_node_type.rs
 src/models/workflow_step_payload.rs
-src/models/workflow_steps_service_add_relationship_body.rs
+src/models/workflow_steps_service_connect_step_body.rs
 src/models/workflow_steps_service_create_body.rs
 src/models/workflow_steps_service_update_body.rs
 src/models/workspace.rs
