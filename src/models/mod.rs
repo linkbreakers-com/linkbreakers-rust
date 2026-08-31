@@ -520,6 +520,8 @@ pub mod qrcode_design_service_update_body;
 pub use self::qrcode_design_service_update_body::QrcodeDesignServiceUpdateBody;
 pub mod qrcode_template;
 pub use self::qrcode_template::QrcodeTemplate;
+pub mod qrcode_template_scope;
+pub use self::qrcode_template_scope::QrcodeTemplateScope;
 pub mod qrcode_templates_service_update_qrcode_template_body;
 pub use self::qrcode_templates_service_update_qrcode_template_body::QrcodeTemplatesServiceUpdateQrcodeTemplateBody;
 pub mod redirect_trace_data;

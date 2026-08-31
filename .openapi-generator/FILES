@@ -292,6 +292,7 @@ src/models/publish_qrcode_template_response.rs
 src/models/qrcode_design.rs
 src/models/qrcode_design_service_update_body.rs
 src/models/qrcode_template.rs
+src/models/qrcode_template_scope.rs
 src/models/qrcode_templates_service_update_qrcode_template_body.rs
 src/models/redirect_trace_data.rs
 src/models/request_workspace_enrollment_request.rs
