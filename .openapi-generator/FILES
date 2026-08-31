@@ -35,6 +35,8 @@ src/models/agent_context_type.rs
 src/models/agent_display_message.rs
 src/models/agent_display_message_attachment.rs
 src/models/agent_get_conversation_response.rs
+src/models/agent_mark_conversation_read_request.rs
+src/models/agent_mark_conversation_read_response.rs
 src/models/agent_send_message_request.rs
 src/models/agent_send_message_response.rs
 src/models/agent_upload_file_request.rs

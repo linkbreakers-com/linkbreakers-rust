@@ -12,24 +12,18 @@ use crate::models;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct AgentSendMessageRequest {
+pub struct AgentMarkConversationReadRequest {
     #[serde(rename = "contextId", skip_serializing_if = "Option::is_none")]
     pub context_id: Option<String>,
-    #[serde(rename = "contextMetadata", skip_serializing_if = "Option::is_none")]
-    pub context_metadata: Option<String>,
     #[serde(rename = "contextType", skip_serializing_if = "Option::is_none")]
     pub context_type: Option<models::AgentContextType>,
-    #[serde(rename = "message", skip_serializing_if = "Option::is_none")]
-    pub message: Option<String>,
 }
 
-impl AgentSendMessageRequest {
-    pub fn new() -> AgentSendMessageRequest {
-        AgentSendMessageRequest {
+impl AgentMarkConversationReadRequest {
+    pub fn new() -> AgentMarkConversationReadRequest {
+        AgentMarkConversationReadRequest {
             context_id: None,
-            context_metadata: None,
             context_type: None,
-            message: None,
         }
     }
 }

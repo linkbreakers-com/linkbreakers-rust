@@ -12,15 +12,15 @@ use crate::models;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct DeleteAttributeResponse {
-    #[serde(rename = "success", skip_serializing_if = "Option::is_none")]
-    pub success: Option<bool>,
+pub struct AgentMarkConversationReadResponse {
+    #[serde(rename = "markedCount", skip_serializing_if = "Option::is_none")]
+    pub marked_count: Option<i32>,
 }
 
-impl DeleteAttributeResponse {
-    pub fn new() -> DeleteAttributeResponse {
-        DeleteAttributeResponse {
-            success: None,
+impl AgentMarkConversationReadResponse {
+    pub fn new() -> AgentMarkConversationReadResponse {
+        AgentMarkConversationReadResponse {
+            marked_count: None,
         }
     }
 }
