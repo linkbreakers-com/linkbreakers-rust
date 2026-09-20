@@ -17,6 +17,7 @@ src/apis/links_api.rs
 src/apis/media_api.rs
 src/apis/members_api.rs
 src/apis/mod.rs
+src/apis/page_theme_templates_api.rs
 src/apis/page_themes_api.rs
 src/apis/qr_code_designs_api.rs
 src/apis/qr_code_templates_api.rs
@@ -46,6 +47,8 @@ src/models/analytics_dashboard_service_generate_widget_summary_body.rs
 src/models/analytics_dashboard_service_update_dashboard_body.rs
 src/models/analytics_widget_result.rs
 src/models/api_tag.rs
+src/models/apply_page_theme_template_request.rs
+src/models/apply_page_theme_template_response.rs
 src/models/apply_qrcode_template_request.rs
 src/models/apply_qrcode_template_response.rs
 src/models/attribute_value_data_point.rs
@@ -90,6 +93,8 @@ src/models/create_link_request.rs
 src/models/create_link_response.rs
 src/models/create_media_request.rs
 src/models/create_media_response.rs
+src/models/create_page_theme_template_request.rs
+src/models/create_page_theme_template_response.rs
 src/models/create_qrcode_template_request.rs
 src/models/create_qrcode_template_response.rs
 src/models/create_thank_you_link_request.rs
@@ -164,6 +169,7 @@ src/models/events_service_create_event_trace_body.rs
 src/models/events_service_update_device_body.rs
 src/models/events_time_series.rs
 src/models/events_time_series_data.rs
+src/models/find_matching_page_theme_template_response.rs
 src/models/font_config.rs
 src/models/form_field.rs
 src/models/form_field_option.rs
@@ -224,6 +230,8 @@ src/models/http_method.rs
 src/models/identify_request.rs
 src/models/identify_response.rs
 src/models/identify_visitor_trace_data.rs
+src/models/import_page_theme_template_request.rs
+src/models/import_page_theme_template_response.rs
 src/models/import_qrcode_template_request.rs
 src/models/import_qrcode_template_response.rs
 src/models/invite_member_request.rs
@@ -244,6 +252,7 @@ src/models/list_events_json_response.rs
 src/models/list_events_response.rs
 src/models/list_links_response.rs
 src/models/list_media_response.rs
+src/models/list_page_theme_templates_response.rs
 src/models/list_page_themes_response.rs
 src/models/list_qrcode_templates_response.rs
 src/models/list_response.rs
@@ -277,6 +286,11 @@ src/models/page_theme_border_style.rs
 src/models/page_theme_canvas_cover_mode.rs
 src/models/page_theme_container_variant.rs
 src/models/page_theme_font_family.rs
+src/models/page_theme_styling.rs
+src/models/page_theme_template.rs
+src/models/page_theme_template_scope.rs
+src/models/page_theme_templates_service_update_page_theme_template_body.rs
+src/models/page_theme_templates_service_update_page_theme_template_styling_body.rs
 src/models/page_themes_service_update_page_theme_body.rs
 src/models/password_payload.rs
 src/models/password_trace_data.rs
@@ -285,9 +299,12 @@ src/models/protobuf_any.rs
 src/models/protobuf_null_value.rs
 src/models/public_create_qrcode_design_request.rs
 src/models/public_create_qrcode_design_response.rs
+src/models/public_list_page_theme_templates_response.rs
 src/models/public_list_qrcode_templates_response.rs
+src/models/public_page_theme_template.rs
 src/models/public_qrcode_template.rs
 src/models/public_workspace.rs
+src/models/publish_page_theme_template_response.rs
 src/models/publish_qrcode_template_response.rs
 src/models/qrcode_design.rs
 src/models/qrcode_design_service_update_body.rs
@@ -340,6 +357,8 @@ src/models/update_link_response.rs
 src/models/update_link_setting_response.rs
 src/models/update_me_request.rs
 src/models/update_page_theme_response.rs
+src/models/update_page_theme_template_response.rs
+src/models/update_page_theme_template_styling_response.rs
 src/models/update_qrcode_design_response.rs
 src/models/update_qrcode_template_response.rs
 src/models/update_slack_integration_request.rs
