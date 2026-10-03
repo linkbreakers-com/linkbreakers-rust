@@ -128,7 +128,6 @@ pub mod page_themes_api;
 pub mod qr_code_designs_api;
 pub mod qr_code_templates_api;
 pub mod slack_integrations_api;
-pub mod support_api;
 pub mod tags_api;
 pub mod time_series_api;
 pub mod visitors_api;
