@@ -259,6 +259,7 @@ src/models/list_tags_response.rs
 src/models/list_visitor_attribute_keys_response.rs
 src/models/list_visitors_csv_response.rs
 src/models/list_visitors_json_response.rs
+src/models/list_visitors_request.rs
 src/models/list_visitors_response.rs
 src/models/list_webhooks_response.rs
 src/models/list_workflow_steps_response.rs
@@ -403,6 +404,9 @@ src/models/visit_type_condition_trace_data.rs
 src/models/visit_type_condition_trace_option.rs
 src/models/visitor.rs
 src/models/visitor_attribute.rs
+src/models/visitor_attribute_filter.rs
+src/models/visitor_attribute_filter_operator.rs
+src/models/visitor_attribute_key.rs
 src/models/visitor_attribute_type.rs
 src/models/visitor_data_condition_option.rs
 src/models/visitor_data_condition_payload.rs
