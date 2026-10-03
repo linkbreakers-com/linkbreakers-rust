@@ -49,8 +49,11 @@ src/models/assistant_mark_conversation_read_request.rs
 src/models/assistant_mark_conversation_read_response.rs
 src/models/assistant_upload_file_request.rs
 src/models/assistant_upload_file_response.rs
+src/models/attribute_capture.rs
 src/models/attribute_value_data_point.rs
 src/models/attribute_value_entry.rs
+src/models/attribute_write.rs
+src/models/attribute_write_mode.rs
 src/models/auto_layout_workflow_response.rs
 src/models/background_options.rs
 src/models/breakdown_data_point.rs
