@@ -236,6 +236,7 @@ src/models/import_page_theme_template_response.rs
 src/models/import_qrcode_template_request.rs
 src/models/import_qrcode_template_response.rs
 src/models/invite_member_request.rs
+src/models/journey_progress.rs
 src/models/lead_score.rs
 src/models/lead_score_breakdown.rs
 src/models/link.rs

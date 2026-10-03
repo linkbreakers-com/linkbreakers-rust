@@ -408,6 +408,8 @@ pub mod import_qrcode_template_response;
 pub use self::import_qrcode_template_response::ImportQrcodeTemplateResponse;
 pub mod invite_member_request;
 pub use self::invite_member_request::InviteMemberRequest;
+pub mod journey_progress;
+pub use self::journey_progress::JourneyProgress;
 pub mod lead_score;
 pub use self::lead_score::LeadScore;
 pub mod lead_score_breakdown;
