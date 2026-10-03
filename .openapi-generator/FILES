@@ -22,6 +22,7 @@ src/apis/page_themes_api.rs
 src/apis/qr_code_designs_api.rs
 src/apis/qr_code_templates_api.rs
 src/apis/slack_integrations_api.rs
+src/apis/support_api.rs
 src/apis/tags_api.rs
 src/apis/time_series_api.rs
 src/apis/visitors_api.rs
@@ -67,6 +68,8 @@ src/models/complete_slack_o_auth_response.rs
 src/models/connect_workflow_step_response.rs
 src/models/contact_card_trace_card.rs
 src/models/contact_card_trace_data.rs
+src/models/contact_support_request.rs
+src/models/contact_support_response.rs
 src/models/container_config.rs
 src/models/corners_dot_options.rs
 src/models/corners_dot_type.rs
