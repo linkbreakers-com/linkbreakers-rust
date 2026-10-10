@@ -106,6 +106,10 @@ src/models/create_workflow_step_response.rs
 src/models/create_workspace_token_request.rs
 src/models/create_workspace_token_response.rs
 src/models/custom_domain.rs
+src/models/custom_domain_dns_record.rs
+src/models/custom_domain_one_click_setup.rs
+src/models/custom_domain_setup_guide.rs
+src/models/custom_domain_setup_hint.rs
 src/models/custom_domain_status.rs
 src/models/custom_domains_service_update_body.rs
 src/models/dashboard_config.rs
@@ -157,6 +161,9 @@ src/models/digest_frequency.rs
 src/models/directories_service_update_body.rs
 src/models/directory.rs
 src/models/disconnect_workflow_step_response.rs
+src/models/dns_provider.rs
+src/models/dns_record_purpose.rs
+src/models/dns_record_type.rs
 src/models/dots_options.rs
 src/models/dots_type.rs
 src/models/entry_access_trace_data.rs
@@ -191,6 +198,7 @@ src/models/get_attribute_values_response.rs
 src/models/get_breakdown_request.rs
 src/models/get_breakdown_response.rs
 src/models/get_custom_domain_response.rs
+src/models/get_custom_domain_setup_guide_response.rs
 src/models/get_device_distribution_request.rs
 src/models/get_device_distribution_response.rs
 src/models/get_directory_response.rs
