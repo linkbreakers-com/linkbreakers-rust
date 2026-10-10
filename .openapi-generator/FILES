@@ -414,6 +414,7 @@ src/models/time_series_point.rs
 src/models/time_series_series.rs
 src/models/top_link_data_point.rs
 src/models/triggered_by.rs
+src/models/type_date.rs
 src/models/update_custom_domain_response.rs
 src/models/update_dashboard_response.rs
 src/models/update_device_response.rs
