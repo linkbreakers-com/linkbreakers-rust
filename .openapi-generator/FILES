@@ -320,6 +320,7 @@ src/models/plan_limit.rs
 src/models/plan_limit_key.rs
 src/models/plan_limit_kind.rs
 src/models/plan_price.rs
+src/models/plan_trial.rs
 src/models/preferred_link_type.rs
 src/models/pricing_plan.rs
 src/models/pricing_plan_id.rs

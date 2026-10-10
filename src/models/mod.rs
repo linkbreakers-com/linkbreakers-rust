@@ -570,6 +570,8 @@ pub mod plan_limit_kind;
 pub use self::plan_limit_kind::PlanLimitKind;
 pub mod plan_price;
 pub use self::plan_price::PlanPrice;
+pub mod plan_trial;
+pub use self::plan_trial::PlanTrial;
 pub mod preferred_link_type;
 pub use self::preferred_link_type::PreferredLinkType;
 pub mod pricing_plan;
