@@ -90,6 +90,9 @@ jobs:
             -g rust \
             -o . \
             --skip-validate-spec \
+            --git-host github.com \
+            --git-user-id linkbreakers-com \
+            --git-repo-id linkbreakers-rust \
             --global-property apiTests=false,modelTests=false,apiDocs=false,modelDocs=false \
             --additional-properties=packageName=linkbreakers,packageVersion=$NEW_VERSION,library=reqwest
 
@@ -122,6 +125,10 @@ jobs:
           cargo build --release
           cargo test || echo "⚠️ Tests failed or no tests found"
           echo "✅ Build completed"
+
+      - name: Check README against the generated SDK
+        if: steps.compare.outputs.needs_update == 'true'
+        run: ./scripts/check-docs.sh
 
       - name: Configure Git
         if: steps.compare.outputs.needs_update == 'true'
