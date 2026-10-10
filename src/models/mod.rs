@@ -750,6 +750,8 @@ pub mod top_link_data_point;
 pub use self::top_link_data_point::TopLinkDataPoint;
 pub mod triggered_by;
 pub use self::triggered_by::TriggeredBy;
+pub mod type_date;
+pub use self::type_date::TypeDate;
 pub mod update_custom_domain_response;
 pub use self::update_custom_domain_response::UpdateCustomDomainResponse;
 pub mod update_dashboard_response;
