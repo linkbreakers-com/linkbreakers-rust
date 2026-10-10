@@ -112,6 +112,7 @@ impl From<&str> for ContentType {
 }
 
 pub mod api_scopes_api;
+pub mod allowances_api;
 pub mod analytics_dashboard_api;
 pub mod analytics_data_api;
 pub mod assistant_api;

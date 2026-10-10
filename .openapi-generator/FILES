@@ -3,6 +3,7 @@
 Cargo.toml
 README.md
 git_push.sh
+src/apis/allowances_api.rs
 src/apis/analytics_dashboard_api.rs
 src/apis/analytics_data_api.rs
 src/apis/api_scopes_api.rs
@@ -168,6 +169,7 @@ src/models/digest_frequency.rs
 src/models/directories_service_update_body.rs
 src/models/directory.rs
 src/models/disconnect_workflow_step_response.rs
+src/models/dismiss_allowance_notice_request.rs
 src/models/dns_provider.rs
 src/models/dns_record_purpose.rs
 src/models/dns_record_type.rs
@@ -256,6 +258,7 @@ src/models/link_setting.rs
 src/models/link_sort_field.rs
 src/models/link_view.rs
 src/models/links_service_update_body.rs
+src/models/list_allowances_response.rs
 src/models/list_api_scopes_response.rs
 src/models/list_custom_domains_response.rs
 src/models/list_dashboards_response.rs
@@ -470,6 +473,7 @@ src/models/workflow_steps_service_connect_step_body.rs
 src/models/workflow_steps_service_create_body.rs
 src/models/workflow_steps_service_update_body.rs
 src/models/workspace.rs
+src/models/workspace_allowance.rs
 src/models/workspace_insight.rs
 src/models/workspace_metric.rs
 src/models/workspace_token.rs
