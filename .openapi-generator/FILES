@@ -204,7 +204,6 @@ src/models/get_grouped_time_series_request.rs
 src/models/get_grouped_time_series_response.rs
 src/models/get_hour_of_day_distribution_request.rs
 src/models/get_hour_of_day_distribution_response.rs
-src/models/get_lead_score_response.rs
 src/models/get_link_response.rs
 src/models/get_link_setting_response.rs
 src/models/get_media_response.rs
@@ -237,8 +236,6 @@ src/models/import_qrcode_template_request.rs
 src/models/import_qrcode_template_response.rs
 src/models/invite_member_request.rs
 src/models/journey_progress.rs
-src/models/lead_score.rs
-src/models/lead_score_breakdown.rs
 src/models/link.rs
 src/models/link_setting.rs
 src/models/link_sort_field.rs
