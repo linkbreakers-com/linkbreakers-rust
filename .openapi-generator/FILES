@@ -3,6 +3,7 @@
 Cargo.toml
 README.md
 git_push.sh
+src/apis/agent_identity_api.rs
 src/apis/allowances_api.rs
 src/apis/analytics_dashboard_api.rs
 src/apis/analytics_data_api.rs
@@ -14,6 +15,7 @@ src/apis/directories_api.rs
 src/apis/events_api.rs
 src/apis/google_forms_integrations_api.rs
 src/apis/integrations_service_api.rs
+src/apis/jobs_api.rs
 src/apis/link_settings_api.rs
 src/apis/links_api.rs
 src/apis/media_api.rs
@@ -24,6 +26,7 @@ src/apis/page_themes_api.rs
 src/apis/pricing_api.rs
 src/apis/qr_code_designs_api.rs
 src/apis/qr_code_templates_api.rs
+src/apis/sandboxes_api.rs
 src/apis/slack_integrations_api.rs
 src/apis/tags_api.rs
 src/apis/time_series_api.rs
@@ -35,6 +38,8 @@ src/apis/workspace_tokens_api.rs
 src/apis/workspaces_api.rs
 src/lib.rs
 src/models/action.rs
+src/models/agent_claim.rs
+src/models/agent_claim_status.rs
 src/models/analytics_dashboard.rs
 src/models/analytics_dashboard_service_generate_widget_summary_body.rs
 src/models/analytics_dashboard_service_update_dashboard_body.rs
@@ -69,6 +74,7 @@ src/models/chat_display_message.rs
 src/models/chat_ui_action.rs
 src/models/chat_ui_option.rs
 src/models/check_custom_domain_response.rs
+src/models/claim_agent_workspace_request.rs
 src/models/client_redirect_payload.rs
 src/models/complete_google_forms_o_auth_request.rs
 src/models/complete_google_forms_o_auth_response.rs
@@ -105,6 +111,8 @@ src/models/create_page_theme_template_request.rs
 src/models/create_page_theme_template_response.rs
 src/models/create_qrcode_template_request.rs
 src/models/create_qrcode_template_response.rs
+src/models/create_sandbox_request.rs
+src/models/create_sandbox_response.rs
 src/models/create_thank_you_link_request.rs
 src/models/create_thank_you_link_response.rs
 src/models/create_webhook_request.rs
@@ -198,6 +206,7 @@ src/models/funnel_branch.rs
 src/models/funnel_step.rs
 src/models/generate_widget_summary_response.rs
 src/models/geo_data_point.rs
+src/models/get_agent_claim_request.rs
 src/models/get_attribute_distribution_request.rs
 src/models/get_attribute_distribution_response.rs
 src/models/get_attribute_metric_request.rs
@@ -252,11 +261,16 @@ src/models/import_page_theme_template_response.rs
 src/models/import_qrcode_template_request.rs
 src/models/import_qrcode_template_response.rs
 src/models/invite_member_request.rs
+src/models/job.rs
+src/models/job_error.rs
+src/models/job_status.rs
+src/models/job_type.rs
 src/models/journey_progress.rs
 src/models/link.rs
 src/models/link_setting.rs
 src/models/link_sort_field.rs
 src/models/link_view.rs
+src/models/links_bulk_create_result.rs
 src/models/links_service_update_body.rs
 src/models/list_allowances_response.rs
 src/models/list_api_scopes_response.rs
@@ -275,6 +289,7 @@ src/models/list_page_themes_response.rs
 src/models/list_pricing_plans_response.rs
 src/models/list_qrcode_templates_response.rs
 src/models/list_response.rs
+src/models/list_sandboxes_response.rs
 src/models/list_slack_channels_response.rs
 src/models/list_tags_response.rs
 src/models/list_visitor_attribute_keys_response.rs
@@ -293,8 +308,6 @@ src/models/member.rs
 src/models/members_service_update_body.rs
 src/models/message_page_navigation_type.rs
 src/models/message_page_payload.rs
-src/models/metered_price.rs
-src/models/metered_unit.rs
 src/models/mod.rs
 src/models/money.rs
 src/models/multi_link_button.rs
@@ -354,6 +367,7 @@ src/models/resolve_qrcode_template_images_response.rs
 src/models/resolve_step_collisions_response.rs
 src/models/response_format.rs
 src/models/role.rs
+src/models/sandbox.rs
 src/models/settings_service_update_link_setting_body.rs
 src/models/shape.rs
 src/models/shortlink_availability_response.rs

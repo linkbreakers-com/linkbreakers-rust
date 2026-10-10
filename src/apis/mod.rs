@@ -112,6 +112,7 @@ impl From<&str> for ContentType {
 }
 
 pub mod api_scopes_api;
+pub mod agent_identity_api;
 pub mod allowances_api;
 pub mod analytics_dashboard_api;
 pub mod analytics_data_api;
@@ -121,6 +122,7 @@ pub mod directories_api;
 pub mod events_api;
 pub mod google_forms_integrations_api;
 pub mod integrations_service_api;
+pub mod jobs_api;
 pub mod link_settings_api;
 pub mod links_api;
 pub mod media_api;
@@ -130,6 +132,7 @@ pub mod page_themes_api;
 pub mod pricing_api;
 pub mod qr_code_designs_api;
 pub mod qr_code_templates_api;
+pub mod sandboxes_api;
 pub mod slack_integrations_api;
 pub mod tags_api;
 pub mod time_series_api;
