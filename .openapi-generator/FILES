@@ -284,6 +284,7 @@ src/models/list_events_json_response.rs
 src/models/list_events_response.rs
 src/models/list_links_response.rs
 src/models/list_media_response.rs
+src/models/list_my_workspaces_response.rs
 src/models/list_page_theme_templates_response.rs
 src/models/list_page_themes_response.rs
 src/models/list_pricing_plans_response.rs
@@ -305,6 +306,7 @@ src/models/media_selection.rs
 src/models/media_type.rs
 src/models/media_visibility.rs
 src/models/member.rs
+src/models/members_service_switch_workspace_body.rs
 src/models/members_service_update_body.rs
 src/models/message_page_navigation_type.rs
 src/models/message_page_payload.rs
@@ -315,6 +317,7 @@ src/models/multi_link_payload.rs
 src/models/multi_link_trace_button.rs
 src/models/multi_link_trace_data.rs
 src/models/multi_link_trace_selected_button.rs
+src/models/my_workspace.rs
 src/models/output_file_format.rs
 src/models/page_theme.rs
 src/models/page_theme_badge_shape.rs
@@ -401,6 +404,7 @@ src/models/specific_date_condition_trace_data.rs
 src/models/specific_date_condition_trace_option.rs
 src/models/specific_date_option.rs
 src/models/subscription_type.rs
+src/models/switch_workspace_response.rs
 src/models/sync_google_forms_response.rs
 src/models/test_slack_integration_response.rs
 src/models/thank_you_page_payload.rs
