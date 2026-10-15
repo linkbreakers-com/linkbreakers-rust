@@ -66,6 +66,7 @@ src/models/attribute_value_entry.rs
 src/models/attribute_write.rs
 src/models/attribute_write_mode.rs
 src/models/auto_layout_workflow_response.rs
+src/models/back_button.rs
 src/models/background_options.rs
 src/models/billing_interval.rs
 src/models/breakdown_data_point.rs
@@ -78,6 +79,7 @@ src/models/claim_agent_workspace_request.rs
 src/models/client_redirect_payload.rs
 src/models/complete_google_forms_o_auth_request.rs
 src/models/complete_google_forms_o_auth_response.rs
+src/models/complete_media_upload_response.rs
 src/models/complete_slack_o_auth_request.rs
 src/models/complete_slack_o_auth_response.rs
 src/models/connect_workflow_step_response.rs
@@ -103,10 +105,14 @@ src/models/create_dashboard_response.rs
 src/models/create_directory_request.rs
 src/models/create_directory_response.rs
 src/models/create_event_trace_response.rs
+src/models/create_file_link_request.rs
+src/models/create_file_link_response.rs
 src/models/create_link_request.rs
 src/models/create_link_response.rs
 src/models/create_media_request.rs
 src/models/create_media_response.rs
+src/models/create_media_upload_request.rs
+src/models/create_media_upload_response.rs
 src/models/create_page_theme_template_request.rs
 src/models/create_page_theme_template_response.rs
 src/models/create_qrcode_template_request.rs
@@ -194,6 +200,8 @@ src/models/events_service_create_event_trace_body.rs
 src/models/events_service_update_device_body.rs
 src/models/events_time_series.rs
 src/models/events_time_series_data.rs
+src/models/file_payload.rs
+src/models/file_trace_data.rs
 src/models/find_matching_page_theme_template_response.rs
 src/models/font_config.rs
 src/models/form_field.rs
@@ -302,8 +310,11 @@ src/models/list_webhooks_response.rs
 src/models/list_workflow_steps_response.rs
 src/models/list_workspace_tokens_response.rs
 src/models/media.rs
+src/models/media_kind.rs
 src/models/media_selection.rs
+src/models/media_status.rs
 src/models/media_type.rs
+src/models/media_usage.rs
 src/models/media_visibility.rs
 src/models/member.rs
 src/models/members_service_switch_workspace_body.rs
