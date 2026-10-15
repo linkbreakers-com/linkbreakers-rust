@@ -311,6 +311,8 @@ src/models/list_workflow_steps_response.rs
 src/models/list_workspace_tokens_response.rs
 src/models/media.rs
 src/models/media_kind.rs
+src/models/media_reference.rs
+src/models/media_reference_type.rs
 src/models/media_selection.rs
 src/models/media_status.rs
 src/models/media_type.rs
@@ -371,6 +373,7 @@ src/models/qrcode_template.rs
 src/models/qrcode_template_scope.rs
 src/models/qrcode_templates_service_update_qrcode_template_body.rs
 src/models/redirect_trace_data.rs
+src/models/redirect_trace_data_fallback_reason.rs
 src/models/request_workspace_enrollment_request.rs
 src/models/resolve_page_theme_template_images_request.rs
 src/models/resolve_page_theme_template_images_response.rs
