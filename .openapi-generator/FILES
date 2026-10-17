@@ -105,14 +105,14 @@ src/models/create_dashboard_response.rs
 src/models/create_directory_request.rs
 src/models/create_directory_response.rs
 src/models/create_event_trace_response.rs
-src/models/create_file_link_request.rs
-src/models/create_file_link_response.rs
 src/models/create_link_request.rs
 src/models/create_link_response.rs
 src/models/create_media_request.rs
 src/models/create_media_response.rs
 src/models/create_media_upload_request.rs
 src/models/create_media_upload_response.rs
+src/models/create_open_media_link_request.rs
+src/models/create_open_media_link_response.rs
 src/models/create_page_theme_template_request.rs
 src/models/create_page_theme_template_response.rs
 src/models/create_qrcode_template_request.rs
@@ -200,8 +200,6 @@ src/models/events_service_create_event_trace_body.rs
 src/models/events_service_update_device_body.rs
 src/models/events_time_series.rs
 src/models/events_time_series_data.rs
-src/models/file_payload.rs
-src/models/file_trace_data.rs
 src/models/find_matching_page_theme_template_response.rs
 src/models/font_config.rs
 src/models/form_field.rs
@@ -315,7 +313,9 @@ src/models/media_reference.rs
 src/models/media_reference_type.rs
 src/models/media_selection.rs
 src/models/media_status.rs
+src/models/media_trace_data.rs
 src/models/media_type.rs
+src/models/media_upload_origin.rs
 src/models/media_usage.rs
 src/models/media_visibility.rs
 src/models/member.rs
@@ -331,6 +331,7 @@ src/models/multi_link_trace_button.rs
 src/models/multi_link_trace_data.rs
 src/models/multi_link_trace_selected_button.rs
 src/models/my_workspace.rs
+src/models/open_media_payload.rs
 src/models/output_file_format.rs
 src/models/page_theme.rs
 src/models/page_theme_badge_shape.rs
