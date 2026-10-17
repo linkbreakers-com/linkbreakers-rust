@@ -52,7 +52,10 @@ src/models/apply_page_theme_template_request.rs
 src/models/apply_page_theme_template_response.rs
 src/models/apply_qrcode_template_request.rs
 src/models/apply_qrcode_template_response.rs
+src/models/assistant_complete_attachment_upload_response.rs
 src/models/assistant_context_type.rs
+src/models/assistant_create_attachment_upload_request.rs
+src/models/assistant_create_attachment_upload_response.rs
 src/models/assistant_display_message.rs
 src/models/assistant_display_message_attachment.rs
 src/models/assistant_get_conversation_response.rs
@@ -262,6 +265,8 @@ src/models/http_method.rs
 src/models/identify_request.rs
 src/models/identify_response.rs
 src/models/identify_visitor_trace_data.rs
+src/models/import_media_request.rs
+src/models/import_media_response.rs
 src/models/import_page_theme_template_request.rs
 src/models/import_page_theme_template_response.rs
 src/models/import_qrcode_template_request.rs
