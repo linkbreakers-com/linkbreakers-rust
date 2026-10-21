@@ -9,6 +9,7 @@ src/apis/analytics_dashboard_api.rs
 src/apis/analytics_data_api.rs
 src/apis/api_scopes_api.rs
 src/apis/assistant_api.rs
+src/apis/auth_api.rs
 src/apis/configuration.rs
 src/apis/custom_domains_api.rs
 src/apis/directories_api.rs
@@ -385,6 +386,7 @@ src/models/qrcode_templates_service_update_qrcode_template_body.rs
 src/models/redirect_trace_data.rs
 src/models/redirect_trace_data_fallback_reason.rs
 src/models/replace_media_import_response.rs
+src/models/request_email_verification_request.rs
 src/models/request_workspace_enrollment_request.rs
 src/models/resolve_page_theme_template_images_request.rs
 src/models/resolve_page_theme_template_images_response.rs

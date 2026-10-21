@@ -692,6 +692,8 @@ pub mod redirect_trace_data_fallback_reason;
 pub use self::redirect_trace_data_fallback_reason::RedirectTraceDataFallbackReason;
 pub mod replace_media_import_response;
 pub use self::replace_media_import_response::ReplaceMediaImportResponse;
+pub mod request_email_verification_request;
+pub use self::request_email_verification_request::RequestEmailVerificationRequest;
 pub mod request_workspace_enrollment_request;
 pub use self::request_workspace_enrollment_request::RequestWorkspaceEnrollmentRequest;
 pub mod resolve_page_theme_template_images_request;

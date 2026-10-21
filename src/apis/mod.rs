@@ -117,6 +117,7 @@ pub mod allowances_api;
 pub mod analytics_dashboard_api;
 pub mod analytics_data_api;
 pub mod assistant_api;
+pub mod auth_api;
 pub mod custom_domains_api;
 pub mod directories_api;
 pub mod events_api;
