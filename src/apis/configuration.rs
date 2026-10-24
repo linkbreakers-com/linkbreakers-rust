@@ -36,12 +36,36 @@ impl Configuration {
     }
 }
 
+/// This SDK's version, from Cargo.toml.
+pub const SDK_VERSION: &str = env!("CARGO_PKG_VERSION");
+
+/// Header that tells the API which client sent a request.
+pub const CLIENT_HEADER_NAME: &str = "Linkbreakers-Client";
+
+/// The Linkbreakers-Client value: "sdk-rust/<version> (rust; <os>)".
+pub fn client_header() -> String {
+    format!("sdk-rust/{} (rust; {})", SDK_VERSION, std::env::consts::OS)
+}
+
+/// The client `Configuration::default()` uses: it sends Linkbreakers-Client on
+/// every request. A client of your own can do the same with `client_header()`.
+pub fn default_client() -> reqwest::Client {
+    let mut headers = reqwest::header::HeaderMap::new();
+    if let Ok(value) = reqwest::header::HeaderValue::from_str(&client_header()) {
+        headers.insert(CLIENT_HEADER_NAME, value);
+    }
+    reqwest::Client::builder()
+        .default_headers(headers)
+        .build()
+        .unwrap_or_else(|_| reqwest::Client::new())
+}
+
 impl Default for Configuration {
     fn default() -> Self {
         Configuration {
             base_path: "https://api.linkbreakers.com".to_owned(),
-            user_agent: Some("OpenAPI-Generator/1.183.3/rust".to_owned()),
-            client: reqwest::Client::new(),
+            user_agent: Some(format!("linkbreakers-rust-sdk/{}", SDK_VERSION)),
+            client: default_client(),
             basic_auth: None,
             oauth_access_token: None,
             bearer_access_token: None,
