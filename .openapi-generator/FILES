@@ -27,7 +27,6 @@ src/apis/page_themes_api.rs
 src/apis/pricing_api.rs
 src/apis/qr_code_designs_api.rs
 src/apis/qr_code_templates_api.rs
-src/apis/sandboxes_api.rs
 src/apis/slack_integrations_api.rs
 src/apis/tags_api.rs
 src/apis/time_series_api.rs
@@ -117,14 +116,14 @@ src/models/create_media_request.rs
 src/models/create_media_response.rs
 src/models/create_media_upload_request.rs
 src/models/create_media_upload_response.rs
+src/models/create_my_workspace_request.rs
+src/models/create_my_workspace_response.rs
 src/models/create_open_media_link_request.rs
 src/models/create_open_media_link_response.rs
 src/models/create_page_theme_template_request.rs
 src/models/create_page_theme_template_response.rs
 src/models/create_qrcode_template_request.rs
 src/models/create_qrcode_template_response.rs
-src/models/create_sandbox_request.rs
-src/models/create_sandbox_response.rs
 src/models/create_thank_you_link_request.rs
 src/models/create_thank_you_link_response.rs
 src/models/create_webhook_request.rs
@@ -304,7 +303,6 @@ src/models/list_page_themes_response.rs
 src/models/list_pricing_plans_response.rs
 src/models/list_qrcode_templates_response.rs
 src/models/list_response.rs
-src/models/list_sandboxes_response.rs
 src/models/list_slack_channels_response.rs
 src/models/list_tags_response.rs
 src/models/list_visitor_attribute_keys_response.rs
@@ -315,6 +313,9 @@ src/models/list_visitors_response.rs
 src/models/list_webhooks_response.rs
 src/models/list_workflow_steps_response.rs
 src/models/list_workspace_tokens_response.rs
+src/models/location_request_outcome.rs
+src/models/location_request_payload.rs
+src/models/location_request_trace_data.rs
 src/models/media.rs
 src/models/media_kind.rs
 src/models/media_reference.rs
@@ -397,7 +398,6 @@ src/models/resolve_qrcode_template_images_response.rs
 src/models/resolve_step_collisions_response.rs
 src/models/response_format.rs
 src/models/role.rs
-src/models/sandbox.rs
 src/models/settings_service_update_link_setting_body.rs
 src/models/shape.rs
 src/models/shortlink_availability_response.rs
