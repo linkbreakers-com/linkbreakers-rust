@@ -135,6 +135,7 @@ pub mod pricing_api;
 pub mod qr_code_designs_api;
 pub mod qr_code_templates_api;
 pub mod retargeting_pixels_api;
+pub mod review_rewards_api;
 pub mod slack_integrations_api;
 pub mod tags_api;
 pub mod time_series_api;
