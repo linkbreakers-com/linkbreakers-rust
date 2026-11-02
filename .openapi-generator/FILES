@@ -442,6 +442,7 @@ src/models/redirect_trace_data_fallback_reason.rs
 src/models/render_qrcode_images_response.rs
 src/models/rendered_qrcode.rs
 src/models/replace_media_import_response.rs
+src/models/report_integration_search_miss_request.rs
 src/models/report_step_search_miss_request.rs
 src/models/request_email_verification_request.rs
 src/models/request_workspace_enrollment_request.rs

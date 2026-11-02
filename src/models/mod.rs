@@ -798,6 +798,8 @@ pub mod rendered_qrcode;
 pub use self::rendered_qrcode::RenderedQrcode;
 pub mod replace_media_import_response;
 pub use self::replace_media_import_response::ReplaceMediaImportResponse;
+pub mod report_integration_search_miss_request;
+pub use self::report_integration_search_miss_request::ReportIntegrationSearchMissRequest;
 pub mod report_step_search_miss_request;
 pub use self::report_step_search_miss_request::ReportStepSearchMissRequest;
 pub mod request_email_verification_request;
