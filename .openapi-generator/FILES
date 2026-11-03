@@ -284,6 +284,7 @@ src/models/get_page_theme_response.rs
 src/models/get_qrcode_design_response.rs
 src/models/get_retargeting_pixels_response.rs
 src/models/get_review_reward_offer_response.rs
+src/models/get_shared_locations_response.rs
 src/models/get_slack_integration_response.rs
 src/models/get_slack_o_auth_url_response.rs
 src/models/get_step_funnel_request.rs
@@ -314,6 +315,8 @@ src/models/import_page_theme_template_request.rs
 src/models/import_page_theme_template_response.rs
 src/models/import_qrcode_template_request.rs
 src/models/import_qrcode_template_response.rs
+src/models/in_app_browser.rs
+src/models/in_app_browser_details.rs
 src/models/invite_member_request.rs
 src/models/job.rs
 src/models/job_error.rs
@@ -466,6 +469,7 @@ src/models/review_reward_status.rs
 src/models/role.rs
 src/models/settings_service_update_link_setting_body.rs
 src/models/shape.rs
+src/models/shared_location.rs
 src/models/shortlink_availability_response.rs
 src/models/shortlink_random_response.rs
 src/models/slack_channel.rs
