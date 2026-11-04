@@ -95,6 +95,17 @@ src/models/back_button.rs
 src/models/background_options.rs
 src/models/billing_interval.rs
 src/models/breakdown_data_point.rs
+src/models/bulk_edit_status.rs
+src/models/bulk_insert_workflow_step_override.rs
+src/models/bulk_insert_workflow_step_request.rs
+src/models/bulk_insert_workflow_step_response.rs
+src/models/bulk_insert_workflow_step_result.rs
+src/models/bulk_page_theme_change.rs
+src/models/bulk_page_theme_result.rs
+src/models/bulk_page_theme_values.rs
+src/models/bulk_step_branch.rs
+src/models/bulk_update_page_themes_request.rs
+src/models/bulk_update_page_themes_response.rs
 src/models/canvas_position.rs
 src/models/chat_bot_collected_value.rs
 src/models/chat_bot_message_author.rs
