@@ -302,6 +302,8 @@ src/models/get_step_funnel_request.rs
 src/models/get_step_funnel_response.rs
 src/models/get_top_links_request.rs
 src/models/get_top_links_response.rs
+src/models/get_traffic_split_results_request.rs
+src/models/get_traffic_split_results_response.rs
 src/models/get_visitor_trends_request.rs
 src/models/get_visitor_trends_response.rs
 src/models/get_wallet_pass_support_response.rs
@@ -458,6 +460,7 @@ src/models/rendered_qrcode.rs
 src/models/replace_media_import_response.rs
 src/models/report_integration_search_miss_request.rs
 src/models/report_step_search_miss_request.rs
+src/models/report_step_search_request.rs
 src/models/request_email_verification_request.rs
 src/models/request_workspace_enrollment_request.rs
 src/models/resolve_page_theme_template_images_request.rs
@@ -528,6 +531,10 @@ src/models/time_of_day_range.rs
 src/models/time_series_point.rs
 src/models/time_series_series.rs
 src/models/top_link_data_point.rs
+src/models/traffic_split_payload.rs
+src/models/traffic_split_trace_data.rs
+src/models/traffic_split_variant.rs
+src/models/traffic_split_variant_result.rs
 src/models/triggered_by.rs
 src/models/type_date.rs
 src/models/update_agent_knowledge_document_response.rs
