@@ -122,6 +122,7 @@ pub mod auth_api;
 pub mod custom_domains_api;
 pub mod directories_api;
 pub mod events_api;
+pub mod form_integrations_api;
 pub mod google_analytics_integrations_api;
 pub mod google_forms_integrations_api;
 pub mod integrations_api;
