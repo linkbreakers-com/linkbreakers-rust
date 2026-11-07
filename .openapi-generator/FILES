@@ -17,6 +17,7 @@ src/apis/directories_api.rs
 src/apis/events_api.rs
 src/apis/google_analytics_integrations_api.rs
 src/apis/google_forms_integrations_api.rs
+src/apis/integrations_api.rs
 src/apis/integrations_service_api.rs
 src/apis/jobs_api.rs
 src/apis/link_settings_api.rs
@@ -330,6 +331,8 @@ src/models/import_qrcode_template_request.rs
 src/models/import_qrcode_template_response.rs
 src/models/in_app_browser.rs
 src/models/in_app_browser_details.rs
+src/models/integration_delivery.rs
+src/models/integration_visitor_data.rs
 src/models/invite_member_request.rs
 src/models/job.rs
 src/models/job_error.rs
@@ -341,6 +344,8 @@ src/models/language_condition_payload.rs
 src/models/language_condition_trace_data.rs
 src/models/language_condition_trace_option.rs
 src/models/link.rs
+src/models/link_integration.rs
+src/models/link_integration_kind.rs
 src/models/link_setting.rs
 src/models/link_sort_field.rs
 src/models/link_view.rs
@@ -359,6 +364,7 @@ src/models/list_event_traces_response.rs
 src/models/list_events_csv_response.rs
 src/models/list_events_json_response.rs
 src/models/list_events_response.rs
+src/models/list_link_integrations_response.rs
 src/models/list_links_response.rs
 src/models/list_media_response.rs
 src/models/list_my_workspaces_response.rs

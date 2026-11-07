@@ -124,6 +124,7 @@ pub mod directories_api;
 pub mod events_api;
 pub mod google_analytics_integrations_api;
 pub mod google_forms_integrations_api;
+pub mod integrations_api;
 pub mod integrations_service_api;
 pub mod jobs_api;
 pub mod link_settings_api;
