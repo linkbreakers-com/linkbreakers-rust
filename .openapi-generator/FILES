@@ -12,6 +12,7 @@ src/apis/api_scopes_api.rs
 src/apis/assistant_api.rs
 src/apis/auth_api.rs
 src/apis/configuration.rs
+src/apis/contact_integrations_api.rs
 src/apis/custom_domains_api.rs
 src/apis/directories_api.rs
 src/apis/events_api.rs
@@ -129,10 +130,23 @@ src/models/complete_media_replace_response.rs
 src/models/complete_media_upload_response.rs
 src/models/complete_slack_o_auth_request.rs
 src/models/complete_slack_o_auth_response.rs
+src/models/connect_contact_tool_response.rs
 src/models/connect_form_tool_response.rs
 src/models/connect_workflow_step_response.rs
 src/models/contact_card_trace_card.rs
 src/models/contact_card_trace_data.rs
+src/models/contact_connection.rs
+src/models/contact_field.rs
+src/models/contact_field_mapping.rs
+src/models/contact_integrations_service_connect_tool_body.rs
+src/models/contact_integrations_service_update_body.rs
+src/models/contact_list.rs
+src/models/contact_pipeline.rs
+src/models/contact_pipeline_stage.rs
+src/models/contact_record_kind.rs
+src/models/contact_sync_options.rs
+src/models/contact_tool.rs
+src/models/contact_tool_capabilities.rs
 src/models/container_config.rs
 src/models/corners_dot_options.rs
 src/models/corners_dot_type.rs
@@ -283,6 +297,7 @@ src/models/get_attribute_values_request.rs
 src/models/get_attribute_values_response.rs
 src/models/get_breakdown_request.rs
 src/models/get_breakdown_response.rs
+src/models/get_contact_connection_response.rs
 src/models/get_custom_domain_response.rs
 src/models/get_custom_domain_setup_guide_response.rs
 src/models/get_data_collection_response.rs
@@ -370,6 +385,10 @@ src/models/list_agent_presets_response.rs
 src/models/list_agents_response.rs
 src/models/list_allowances_response.rs
 src/models/list_api_scopes_response.rs
+src/models/list_contact_connections_response.rs
+src/models/list_contact_tool_fields_response.rs
+src/models/list_contact_tool_lists_response.rs
+src/models/list_contact_tool_pipelines_response.rs
 src/models/list_custom_domains_response.rs
 src/models/list_dashboards_response.rs
 src/models/list_detected_google_forms_response.rs
@@ -393,6 +412,7 @@ src/models/list_retargeting_pixels_for_link_response.rs
 src/models/list_slack_channels_response.rs
 src/models/list_tags_response.rs
 src/models/list_visitor_attribute_keys_response.rs
+src/models/list_visitor_consents_response.rs
 src/models/list_visitor_countries_response.rs
 src/models/list_visitors_csv_response.rs
 src/models/list_visitors_json_response.rs
@@ -541,6 +561,7 @@ src/models/submit_review_reward_response.rs
 src/models/subscription_type.rs
 src/models/switch_workspace_response.rs
 src/models/sync_google_forms_response.rs
+src/models/test_contact_connection_response.rs
 src/models/test_google_analytics_integration_response.rs
 src/models/test_slack_integration_response.rs
 src/models/thank_you_page_payload.rs
@@ -561,6 +582,7 @@ src/models/triggered_by.rs
 src/models/type_date.rs
 src/models/update_agent_knowledge_document_response.rs
 src/models/update_agent_response.rs
+src/models/update_contact_connection_response.rs
 src/models/update_custom_domain_response.rs
 src/models/update_dashboard_response.rs
 src/models/update_data_collection_request.rs
@@ -609,6 +631,7 @@ src/models/visitor_attribute_filter.rs
 src/models/visitor_attribute_filter_operator.rs
 src/models/visitor_attribute_key.rs
 src/models/visitor_attribute_type.rs
+src/models/visitor_consent.rs
 src/models/visitor_country.rs
 src/models/visitor_data_condition_option.rs
 src/models/visitor_data_condition_payload.rs
