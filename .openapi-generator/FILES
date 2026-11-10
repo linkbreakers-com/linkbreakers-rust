@@ -123,6 +123,7 @@ src/models/chat_ui_option.rs
 src/models/check_custom_domain_response.rs
 src/models/claim_agent_workspace_request.rs
 src/models/client_redirect_payload.rs
+src/models/complete_contact_tool_o_auth_response.rs
 src/models/complete_form_tool_o_auth_response.rs
 src/models/complete_google_forms_o_auth_request.rs
 src/models/complete_google_forms_o_auth_response.rs
@@ -138,15 +139,19 @@ src/models/contact_card_trace_data.rs
 src/models/contact_connection.rs
 src/models/contact_field.rs
 src/models/contact_field_mapping.rs
+src/models/contact_integrations_service_complete_o_auth_body.rs
 src/models/contact_integrations_service_connect_tool_body.rs
+src/models/contact_integrations_service_start_o_auth_body.rs
 src/models/contact_integrations_service_update_body.rs
 src/models/contact_list.rs
+src/models/contact_o_auth_environment.rs
 src/models/contact_pipeline.rs
 src/models/contact_pipeline_stage.rs
 src/models/contact_record_kind.rs
 src/models/contact_sync_options.rs
 src/models/contact_tool.rs
 src/models/contact_tool_capabilities.rs
+src/models/contact_tool_info.rs
 src/models/container_config.rs
 src/models/corners_dot_options.rs
 src/models/corners_dot_type.rs
@@ -298,6 +303,7 @@ src/models/get_attribute_values_response.rs
 src/models/get_breakdown_request.rs
 src/models/get_breakdown_response.rs
 src/models/get_contact_connection_response.rs
+src/models/get_contact_tool_response.rs
 src/models/get_custom_domain_response.rs
 src/models/get_custom_domain_setup_guide_response.rs
 src/models/get_data_collection_response.rs
@@ -556,6 +562,7 @@ src/models/specific_date_condition_payload.rs
 src/models/specific_date_condition_trace_data.rs
 src/models/specific_date_condition_trace_option.rs
 src/models/specific_date_option.rs
+src/models/start_contact_tool_o_auth_response.rs
 src/models/submit_review_reward_request.rs
 src/models/submit_review_reward_response.rs
 src/models/subscription_type.rs
