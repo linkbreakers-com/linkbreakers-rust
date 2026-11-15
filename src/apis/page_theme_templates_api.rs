@@ -1,9 +1,9 @@
 /*
  * Linkbreakers API
  *
- * This is a documentation of all the APIs of Linkbreakers  ## Entry points  `GET https://api.linkbreakers.com/` and `GET https://api.linkbreakers.com/v1` answer without credentials with the API's name, version and links. This document is served at `https://api.linkbreakers.com/openapi.json`.  ## Rate limits  Every response describes where the caller stands in the IETF `RateLimit-Policy` and `RateLimit` header fields (draft-ietf-httpapi-ratelimit-headers), and in `RateLimit-Limit`, `RateLimit-Remaining`, `RateLimit-Reset` and `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset` (a Unix timestamp) for clients that read those. A request past the limit gets `429 Too Many Requests` with `Retry-After` in seconds.  - Workspace API token: 720 requests per 60 seconds, per token. - Dashboard session or OAuth token: 600 requests per 60 seconds, per token. - No credentials: 300 requests per 60 seconds, per client IP.  Each plan also includes a number of API calls per billing cycle. Past it, calls answer `429` with the code `MAX_PUBLIC_API_QUERIED_REACHED` until the cycle renews or the plan changes.  ## Pagination  Every list pages with opaque cursors (AIP-158). Pass `pageSize`, then send the `nextPageToken` of each response back as `pageToken` (or its alias `cursor`) to get the next page. An empty or absent `nextPageToken` means the list is complete. Each list operation describes this in `x-pagination`.  ## Batches and background jobs  `POST /v1/links/bulk` creates up to 250 links in one transactional request; `POST /v1/links/batch` takes the same links as a bare JSON array. `POST /v1/links/bulk/jobs` accepts the same batch and answers `202 Accepted` at once with a job and a `Location` header; poll `GET /v1/jobs/{id}` until `status` is `JOB_STATUS_SUCCEEDED` (the created link ids are in `linksBulkCreate.linkIds`) or `JOB_STATUS_FAILED` (`error` says why, and nothing was created). Jobs can be read for 24 hours after they finish.  ## Versioning and deprecation  The version is in the path: every operation lives under `/v1`. Within a version, changes are additive only: new operations, new optional request fields, new response fields and new enum values. Clients should ignore fields and enum values they do not know. Anything that would break an existing client ships under a new path version instead.  An operation is retired in two steps. First it is deprecated: it keeps working, is flagged `deprecated: true` in this document, and every response carries a `Deprecation` header field (RFC 9745) with the time it was deprecated and a `Link` with `rel=\"deprecation\"` to the policy. Then, at least 180 days later, it may be removed; that date is announced in advance in a `Sunset` header field (RFC 8594) and as `x-sunset` on the operation. The full policy: https://linkbreakers.com/help/article/api-versioning-and-deprecation-policy  ## Idempotent retries  Every POST, PUT and PATCH accepts an optional `Idempotency-Key` header (draft-ietf-httpapi-idempotency-key-header). Send a new unique value, such as a UUID, with each logical request and reuse it only to retry that request. A retry with the same key and the same request returns the first response, marked `Idempotent-Replayed: true`, instead of running again. Keys are scoped to the token and kept for 24 hours. The same key with a different request is refused with `422`, and a retry while the first request is still running gets `409` with `Retry-After`. Server errors (5xx) and refusals such as 401, 403 and 429 are not stored, so retrying them runs the request again.  ## Identifying your client  Send a `Linkbreakers-Client` request header saying which client made the call: `<client>/<version> (<details>)`, for example `my-integration/1.2.0 (python 3.12; linux)`. The official SDKs, the CLI and the MCP bridge set it for you, as `sdk-python/2.3.1 (python 3.12.4; linux)` or `cli/1.4.0 (darwin arm64)`. It is optional and changes nothing about how a request is handled; it tells us which clients and versions are in use, so we know what can be retired and what to fix first. Keep the details short and free of personal data. Browsers may send it too: it is allowed by CORS.
+ * The Linkbreakers REST API: links, QR codes, workflows, visitors and analytics, as JSON over HTTPS. Send a workspace API token as `Authorization: Bearer <token>`.  ## Entry points  `GET https://api.linkbreakers.com/` and `GET https://api.linkbreakers.com/v1` answer without credentials with the API's name, version and links. This document is served at `https://api.linkbreakers.com/openapi.json`.  ## Rate limits  Every response describes where the caller stands in the IETF `RateLimit-Policy` and `RateLimit` header fields (draft-ietf-httpapi-ratelimit-headers), and in `RateLimit-Limit`, `RateLimit-Remaining`, `RateLimit-Reset` and `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset` (a Unix timestamp) for clients that read those. A request past the limit gets `429 Too Many Requests` with `Retry-After` in seconds.  - Workspace API token: 720 requests per 60 seconds, per token. - Dashboard session or OAuth token: 600 requests per 60 seconds, per token. - No credentials: 300 requests per 60 seconds, per client IP.  Each plan also includes a number of API calls per billing cycle. Past it, calls answer `429` with the code `MAX_PUBLIC_API_QUERIED_REACHED` until the cycle renews or the plan changes.  ## Pagination  Every list pages with opaque cursors (AIP-158). Pass `pageSize`, then send the `nextPageToken` of each response back as `pageToken` (or its alias `cursor`) to get the next page. An empty or absent `nextPageToken` means the list is complete. Each list operation describes this in `x-pagination`.  ## Batches and background jobs  `POST /v1/links/bulk` creates up to 250 links in one transactional request; `POST /v1/links/batch` takes the same links as a bare JSON array. `POST /v1/links/bulk/jobs` accepts the same batch and answers `202 Accepted` at once with a job and a `Location` header; poll `GET /v1/jobs/{id}` until `status` is `JOB_STATUS_SUCCEEDED` (the created link ids are in `linksBulkCreate.linkIds`) or `JOB_STATUS_FAILED` (`error` says why, and nothing was created). Jobs can be read for 24 hours after they finish.  ## Versioning and deprecation  The version is in the path: every operation lives under `/v1`. Within a version, changes are additive only: new operations, new optional request fields, new response fields and new enum values. Clients should ignore fields and enum values they do not know. Anything that would break an existing client ships under a new path version instead.  An operation is retired in two steps. First it is deprecated: it keeps working, is flagged `deprecated: true` in this document, and every response carries a `Deprecation` header field (RFC 9745) with the time it was deprecated and a `Link` with `rel=\"deprecation\"` to the policy. Then, at least 180 days later, it may be removed; that date is announced in advance in a `Sunset` header field (RFC 8594) and as `x-sunset` on the operation. The full policy: https://linkbreakers.com/help/article/api-versioning-and-deprecation-policy  A renamed operation keeps answering its former path until that path's sunset. Responses on a former path carry the same `Deprecation`, `Sunset` and `Link` header fields; this document lists only the current path, and the policy lists the former ones.  ## Idempotent retries  Every POST, PUT and PATCH accepts an optional `Idempotency-Key` header (draft-ietf-httpapi-idempotency-key-header). Send a new unique value, such as a UUID, with each logical request and reuse it only to retry that request. A retry with the same key and the same request returns the first response, marked `Idempotent-Replayed: true`, instead of running again. Keys are scoped to the token and kept for 24 hours. The same key with a different request is refused with `422`, and a retry while the first request is still running gets `409` with `Retry-After`. Server errors (5xx) and refusals such as 401, 403 and 429 are not stored, so retrying them runs the request again.  ## Identifying your client  Send a `Linkbreakers-Client` request header saying which client made the call: `<client>/<version> (<details>)`, for example `my-integration/1.2.0 (python 3.12; linux)`. The official SDKs, the CLI and the MCP bridge set it for you, as `sdk-python/2.3.1 (python 3.12.4; linux)` or `cli/1.4.0 (darwin arm64)`. It is optional and changes nothing about how a request is handled; it tells us which clients and versions are in use, so we know what can be retired and what to fix first. Keep the details short and free of personal data. Browsers may send it too: it is allowed by CORS.
  *
- * The version of the OpenAPI document: 1.198.0
+ * The version of the OpenAPI document: 1.198.1
  * 
  * Generated by: https://openapi-generator.tech
  */
@@ -15,100 +15,91 @@ use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
 
-/// struct for typed errors of method [`page_theme_templates_service_create_page_theme_template`]
+/// struct for typed errors of method [`page_theme_templates_service_create`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum PageThemeTemplatesServiceCreatePageThemeTemplateError {
+pub enum PageThemeTemplatesServiceCreateError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`page_theme_templates_service_delete_page_theme_template`]
+/// struct for typed errors of method [`page_theme_templates_service_delete`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum PageThemeTemplatesServiceDeletePageThemeTemplateError {
+pub enum PageThemeTemplatesServiceDeleteError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`page_theme_templates_service_get_page_theme_template`]
+/// struct for typed errors of method [`page_theme_templates_service_get`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum PageThemeTemplatesServiceGetPageThemeTemplateError {
+pub enum PageThemeTemplatesServiceGetError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`page_theme_templates_service_import_page_theme_template`]
+/// struct for typed errors of method [`page_theme_templates_service_get_public`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum PageThemeTemplatesServiceImportPageThemeTemplateError {
+pub enum PageThemeTemplatesServiceGetPublicError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`page_theme_templates_service_list_page_theme_templates`]
+/// struct for typed errors of method [`page_theme_templates_service_import`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum PageThemeTemplatesServiceListPageThemeTemplatesError {
+pub enum PageThemeTemplatesServiceImportError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`page_theme_templates_service_public_get_page_theme_template`]
+/// struct for typed errors of method [`page_theme_templates_service_list`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum PageThemeTemplatesServicePublicGetPageThemeTemplateError {
+pub enum PageThemeTemplatesServiceListError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`page_theme_templates_service_public_list_page_theme_templates`]
+/// struct for typed errors of method [`page_theme_templates_service_list_public`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum PageThemeTemplatesServicePublicListPageThemeTemplatesError {
+pub enum PageThemeTemplatesServiceListPublicError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`page_theme_templates_service_publish_page_theme_template`]
+/// struct for typed errors of method [`page_theme_templates_service_publish`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum PageThemeTemplatesServicePublishPageThemeTemplateError {
+pub enum PageThemeTemplatesServicePublishError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`page_theme_templates_service_resolve_page_theme_template_images`]
+/// struct for typed errors of method [`page_theme_templates_service_update`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum PageThemeTemplatesServiceResolvePageThemeTemplateImagesError {
+pub enum PageThemeTemplatesServiceUpdateError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`page_theme_templates_service_update_page_theme_template`]
+/// struct for typed errors of method [`page_theme_templates_service_update_styling`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum PageThemeTemplatesServiceUpdatePageThemeTemplateError {
-    Status429(models::ErrorResponse),
-    DefaultResponse(models::ErrorResponse),
-    UnknownValue(serde_json::Value),
-}
-
-/// struct for typed errors of method [`page_theme_templates_service_update_page_theme_template_styling`]
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(untagged)]
-pub enum PageThemeTemplatesServiceUpdatePageThemeTemplateStylingError {
+pub enum PageThemeTemplatesServiceUpdateStylingError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
@@ -116,7 +107,7 @@ pub enum PageThemeTemplatesServiceUpdatePageThemeTemplateStylingError {
 
 
 /// Create a page theme template by copying the styling of an existing page theme into a fresh detached theme owned by the template.  Requires the `page_themes:write` scope.
-pub async fn page_theme_templates_service_create_page_theme_template(configuration: &configuration::Configuration, create_page_theme_template_request: models::CreatePageThemeTemplateRequest, idempotency_key: Option<&str>) -> Result<models::CreatePageThemeTemplateResponse, Error<PageThemeTemplatesServiceCreatePageThemeTemplateError>> {
+pub async fn page_theme_templates_service_create(configuration: &configuration::Configuration, create_page_theme_template_request: models::CreatePageThemeTemplateRequest, idempotency_key: Option<&str>) -> Result<models::CreatePageThemeTemplateResponse, Error<PageThemeTemplatesServiceCreateError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_body_create_page_theme_template_request = create_page_theme_template_request;
     let p_header_idempotency_key = idempotency_key;
@@ -158,13 +149,13 @@ pub async fn page_theme_templates_service_create_page_theme_template(configurati
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<PageThemeTemplatesServiceCreatePageThemeTemplateError> = serde_json::from_str(&content).ok();
+        let entity: Option<PageThemeTemplatesServiceCreateError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Remove a page theme template belonging to the authenticated caller's workspace. Pages already styled from it are unaffected.  Requires the `page_themes:write` scope.
-pub async fn page_theme_templates_service_delete_page_theme_template(configuration: &configuration::Configuration, id: &str) -> Result<serde_json::Value, Error<PageThemeTemplatesServiceDeletePageThemeTemplateError>> {
+pub async fn page_theme_templates_service_delete(configuration: &configuration::Configuration, id: &str) -> Result<serde_json::Value, Error<PageThemeTemplatesServiceDeleteError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
 
@@ -201,13 +192,13 @@ pub async fn page_theme_templates_service_delete_page_theme_template(configurati
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<PageThemeTemplatesServiceDeletePageThemeTemplateError> = serde_json::from_str(&content).ok();
+        let entity: Option<PageThemeTemplatesServiceDeleteError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Retrieve a page theme template that belongs to the authenticated caller's workspace.  Requires the `page_themes:read` scope.
-pub async fn page_theme_templates_service_get_page_theme_template(configuration: &configuration::Configuration, id: &str, include: Option<Vec<String>>) -> Result<models::PageThemeTemplate, Error<PageThemeTemplatesServiceGetPageThemeTemplateError>> {
+pub async fn page_theme_templates_service_get(configuration: &configuration::Configuration, id: &str, include: Option<Vec<String>>) -> Result<models::PageThemeTemplate, Error<PageThemeTemplatesServiceGetError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_include = include;
@@ -251,13 +242,57 @@ pub async fn page_theme_templates_service_get_page_theme_template(configuration:
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<PageThemeTemplatesServiceGetPageThemeTemplateError> = serde_json::from_str(&content).ok();
+        let entity: Option<PageThemeTemplatesServiceGetError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
+    }
+}
+
+/// Retrieve a single published page theme template that is visible in the public gallery.
+pub async fn page_theme_templates_service_get_public(configuration: &configuration::Configuration, slug: &str, include: Option<Vec<String>>) -> Result<models::PublicPageThemeTemplate, Error<PageThemeTemplatesServiceGetPublicError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_slug = slug;
+    let p_query_include = include;
+
+    let uri_str = format!("{}/v1/public/page-theme-templates/{slug}", configuration.base_path, slug=crate::apis::urlencode(p_path_slug));
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref param_value) = p_query_include {
+        req_builder = match "multi" {
+            "multi" => req_builder.query(&param_value.into_iter().map(|p| ("include".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
+            _ => req_builder.query(&[("include", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
+        };
+    }
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::PublicPageThemeTemplate`"))),
+            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::PublicPageThemeTemplate`")))),
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<PageThemeTemplatesServiceGetPublicError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Import a public page theme template into your workspace by slug. Creates a private copy owned by your workspace.  Requires the `page_themes:write` scope.
-pub async fn page_theme_templates_service_import_page_theme_template(configuration: &configuration::Configuration, import_page_theme_template_request: models::ImportPageThemeTemplateRequest, idempotency_key: Option<&str>) -> Result<models::ImportPageThemeTemplateResponse, Error<PageThemeTemplatesServiceImportPageThemeTemplateError>> {
+pub async fn page_theme_templates_service_import(configuration: &configuration::Configuration, import_page_theme_template_request: models::ImportPageThemeTemplateRequest, idempotency_key: Option<&str>) -> Result<models::ImportPageThemeTemplateResponse, Error<PageThemeTemplatesServiceImportError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_body_import_page_theme_template_request = import_page_theme_template_request;
     let p_header_idempotency_key = idempotency_key;
@@ -299,13 +334,13 @@ pub async fn page_theme_templates_service_import_page_theme_template(configurati
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<PageThemeTemplatesServiceImportPageThemeTemplateError> = serde_json::from_str(&content).ok();
+        let entity: Option<PageThemeTemplatesServiceImportError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Retrieve page theme templates that belong to the authenticated caller's workspace.  Requires the `page_themes:read` scope.
-pub async fn page_theme_templates_service_list_page_theme_templates(configuration: &configuration::Configuration, include: Option<Vec<String>>, search: Option<&str>, page_size: Option<i64>, page_token: Option<&str>, scope: Option<&str>, cursor: Option<&str>) -> Result<models::ListPageThemeTemplatesResponse, Error<PageThemeTemplatesServiceListPageThemeTemplatesError>> {
+pub async fn page_theme_templates_service_list(configuration: &configuration::Configuration, include: Option<Vec<String>>, search: Option<&str>, page_size: Option<i64>, page_token: Option<&str>, scope: Option<&str>, cursor: Option<&str>) -> Result<models::ListPageThemeTemplatesResponse, Error<PageThemeTemplatesServiceListError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_include = include;
     let p_query_search = search;
@@ -368,57 +403,13 @@ pub async fn page_theme_templates_service_list_page_theme_templates(configuratio
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<PageThemeTemplatesServiceListPageThemeTemplatesError> = serde_json::from_str(&content).ok();
-        Err(Error::ResponseError(ResponseContent { status, content, entity }))
-    }
-}
-
-/// Retrieve a single published page theme template that is visible in the public gallery.
-pub async fn page_theme_templates_service_public_get_page_theme_template(configuration: &configuration::Configuration, slug: &str, include: Option<Vec<String>>) -> Result<models::PublicPageThemeTemplate, Error<PageThemeTemplatesServicePublicGetPageThemeTemplateError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_slug = slug;
-    let p_query_include = include;
-
-    let uri_str = format!("{}/v1/public/page-theme-templates/{slug}", configuration.base_path, slug=crate::apis::urlencode(p_path_slug));
-    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
-
-    if let Some(ref param_value) = p_query_include {
-        req_builder = match "multi" {
-            "multi" => req_builder.query(&param_value.into_iter().map(|p| ("include".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
-            _ => req_builder.query(&[("include", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
-        };
-    }
-    if let Some(ref user_agent) = configuration.user_agent {
-        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
-    }
-
-    let req = req_builder.build()?;
-    let resp = configuration.client.execute(req).await?;
-
-    let status = resp.status();
-    let content_type = resp
-        .headers()
-        .get("content-type")
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("application/octet-stream");
-    let content_type = super::ContentType::from(content_type);
-
-    if !status.is_client_error() && !status.is_server_error() {
-        let content = resp.text().await?;
-        match content_type {
-            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::PublicPageThemeTemplate`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::PublicPageThemeTemplate`")))),
-        }
-    } else {
-        let content = resp.text().await?;
-        let entity: Option<PageThemeTemplatesServicePublicGetPageThemeTemplateError> = serde_json::from_str(&content).ok();
+        let entity: Option<PageThemeTemplatesServiceListError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Retrieve available public page theme templates, optionally filtered by search terms.
-pub async fn page_theme_templates_service_public_list_page_theme_templates(configuration: &configuration::Configuration, include: Option<Vec<String>>, search: Option<&str>, page_size: Option<i64>, page_token: Option<&str>, workspace_id: Option<&str>, cursor: Option<&str>) -> Result<models::PublicListPageThemeTemplatesResponse, Error<PageThemeTemplatesServicePublicListPageThemeTemplatesError>> {
+pub async fn page_theme_templates_service_list_public(configuration: &configuration::Configuration, include: Option<Vec<String>>, search: Option<&str>, page_size: Option<i64>, page_token: Option<&str>, workspace_id: Option<&str>, cursor: Option<&str>) -> Result<models::PublicListPageThemeTemplatesResponse, Error<PageThemeTemplatesServiceListPublicError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_include = include;
     let p_query_search = search;
@@ -475,13 +466,13 @@ pub async fn page_theme_templates_service_public_list_page_theme_templates(confi
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<PageThemeTemplatesServicePublicListPageThemeTemplatesError> = serde_json::from_str(&content).ok();
+        let entity: Option<PageThemeTemplatesServiceListPublicError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Publish a page theme template to make it available in the public gallery. Requires workspace to be public and template to have slug, description, and name.  Requires the `page_themes:write` scope.
-pub async fn page_theme_templates_service_publish_page_theme_template(configuration: &configuration::Configuration, id: &str, body: serde_json::Value, idempotency_key: Option<&str>) -> Result<models::PublishPageThemeTemplateResponse, Error<PageThemeTemplatesServicePublishPageThemeTemplateError>> {
+pub async fn page_theme_templates_service_publish(configuration: &configuration::Configuration, id: &str, body: serde_json::Value, idempotency_key: Option<&str>) -> Result<models::PublishPageThemeTemplateResponse, Error<PageThemeTemplatesServicePublishError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_body_body = body;
@@ -524,64 +515,16 @@ pub async fn page_theme_templates_service_publish_page_theme_template(configurat
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<PageThemeTemplatesServicePublishPageThemeTemplateError> = serde_json::from_str(&content).ok();
-        Err(Error::ResponseError(ResponseContent { status, content, entity }))
-    }
-}
-
-/// Return freshly signed thumbnail, cover, badge and footer logo URLs for the given templates. The URLs expire, so callers fetch them when they need to render rather than storing them.  Requires the `page_themes:read` scope.
-pub async fn page_theme_templates_service_resolve_page_theme_template_images(configuration: &configuration::Configuration, resolve_page_theme_template_images_request: models::ResolvePageThemeTemplateImagesRequest, idempotency_key: Option<&str>) -> Result<models::ResolvePageThemeTemplateImagesResponse, Error<PageThemeTemplatesServiceResolvePageThemeTemplateImagesError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_resolve_page_theme_template_images_request = resolve_page_theme_template_images_request;
-    let p_header_idempotency_key = idempotency_key;
-
-    let uri_str = format!("{}/v1/page-theme-templates/images:resolve", configuration.base_path);
-    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
-
-    if let Some(ref user_agent) = configuration.user_agent {
-        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
-    }
-    if let Some(param_value) = p_header_idempotency_key {
-        req_builder = req_builder.header("Idempotency-Key", param_value.to_string());
-    }
-    if let Some(ref token) = configuration.oauth_access_token {
-        req_builder = req_builder.bearer_auth(token.to_owned());
-    };
-    if let Some(ref token) = configuration.bearer_access_token {
-        req_builder = req_builder.bearer_auth(token.to_owned());
-    };
-    req_builder = req_builder.json(&p_body_resolve_page_theme_template_images_request);
-
-    let req = req_builder.build()?;
-    let resp = configuration.client.execute(req).await?;
-
-    let status = resp.status();
-    let content_type = resp
-        .headers()
-        .get("content-type")
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("application/octet-stream");
-    let content_type = super::ContentType::from(content_type);
-
-    if !status.is_client_error() && !status.is_server_error() {
-        let content = resp.text().await?;
-        match content_type {
-            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::ResolvePageThemeTemplateImagesResponse`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::ResolvePageThemeTemplateImagesResponse`")))),
-        }
-    } else {
-        let content = resp.text().await?;
-        let entity: Option<PageThemeTemplatesServiceResolvePageThemeTemplateImagesError> = serde_json::from_str(&content).ok();
+        let entity: Option<PageThemeTemplatesServicePublishError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Modify the metadata of a page theme template owned by the authenticated workspace.  Requires the `page_themes:write` scope.
-pub async fn page_theme_templates_service_update_page_theme_template(configuration: &configuration::Configuration, id: &str, page_theme_templates_service_update_page_theme_template_body: models::PageThemeTemplatesServiceUpdatePageThemeTemplateBody, idempotency_key: Option<&str>) -> Result<models::UpdatePageThemeTemplateResponse, Error<PageThemeTemplatesServiceUpdatePageThemeTemplateError>> {
+pub async fn page_theme_templates_service_update(configuration: &configuration::Configuration, id: &str, page_theme_templates_service_update_body: models::PageThemeTemplatesServiceUpdateBody, idempotency_key: Option<&str>) -> Result<models::UpdatePageThemeTemplateResponse, Error<PageThemeTemplatesServiceUpdateError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
-    let p_body_page_theme_templates_service_update_page_theme_template_body = page_theme_templates_service_update_page_theme_template_body;
+    let p_body_page_theme_templates_service_update_body = page_theme_templates_service_update_body;
     let p_header_idempotency_key = idempotency_key;
 
     let uri_str = format!("{}/v1/page-theme-templates/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
@@ -599,7 +542,7 @@ pub async fn page_theme_templates_service_update_page_theme_template(configurati
     if let Some(ref token) = configuration.bearer_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    req_builder = req_builder.json(&p_body_page_theme_templates_service_update_page_theme_template_body);
+    req_builder = req_builder.json(&p_body_page_theme_templates_service_update_body);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -621,16 +564,16 @@ pub async fn page_theme_templates_service_update_page_theme_template(configurati
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<PageThemeTemplatesServiceUpdatePageThemeTemplateError> = serde_json::from_str(&content).ok();
+        let entity: Option<PageThemeTemplatesServiceUpdateError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Edit the colours, typography, container and media of a page theme template. Queues a thumbnail regeneration.  Requires the `page_themes:write` scope.
-pub async fn page_theme_templates_service_update_page_theme_template_styling(configuration: &configuration::Configuration, id: &str, page_theme_templates_service_update_page_theme_template_styling_body: models::PageThemeTemplatesServiceUpdatePageThemeTemplateStylingBody, idempotency_key: Option<&str>) -> Result<models::UpdatePageThemeTemplateStylingResponse, Error<PageThemeTemplatesServiceUpdatePageThemeTemplateStylingError>> {
+pub async fn page_theme_templates_service_update_styling(configuration: &configuration::Configuration, id: &str, page_theme_templates_service_update_styling_body: models::PageThemeTemplatesServiceUpdateStylingBody, idempotency_key: Option<&str>) -> Result<models::UpdatePageThemeTemplateStylingResponse, Error<PageThemeTemplatesServiceUpdateStylingError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
-    let p_body_page_theme_templates_service_update_page_theme_template_styling_body = page_theme_templates_service_update_page_theme_template_styling_body;
+    let p_body_page_theme_templates_service_update_styling_body = page_theme_templates_service_update_styling_body;
     let p_header_idempotency_key = idempotency_key;
 
     let uri_str = format!("{}/v1/page-theme-templates/{id}/styling", configuration.base_path, id=crate::apis::urlencode(p_path_id));
@@ -648,7 +591,7 @@ pub async fn page_theme_templates_service_update_page_theme_template_styling(con
     if let Some(ref token) = configuration.bearer_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    req_builder = req_builder.json(&p_body_page_theme_templates_service_update_page_theme_template_styling_body);
+    req_builder = req_builder.json(&p_body_page_theme_templates_service_update_styling_body);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -670,7 +613,7 @@ pub async fn page_theme_templates_service_update_page_theme_template_styling(con
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<PageThemeTemplatesServiceUpdatePageThemeTemplateStylingError> = serde_json::from_str(&content).ok();
+        let entity: Option<PageThemeTemplatesServiceUpdateStylingError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }

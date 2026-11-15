@@ -1,9 +1,9 @@
 /*
  * Linkbreakers API
  *
- * This is a documentation of all the APIs of Linkbreakers  ## Entry points  `GET https://api.linkbreakers.com/` and `GET https://api.linkbreakers.com/v1` answer without credentials with the API's name, version and links. This document is served at `https://api.linkbreakers.com/openapi.json`.  ## Rate limits  Every response describes where the caller stands in the IETF `RateLimit-Policy` and `RateLimit` header fields (draft-ietf-httpapi-ratelimit-headers), and in `RateLimit-Limit`, `RateLimit-Remaining`, `RateLimit-Reset` and `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset` (a Unix timestamp) for clients that read those. A request past the limit gets `429 Too Many Requests` with `Retry-After` in seconds.  - Workspace API token: 720 requests per 60 seconds, per token. - Dashboard session or OAuth token: 600 requests per 60 seconds, per token. - No credentials: 300 requests per 60 seconds, per client IP.  Each plan also includes a number of API calls per billing cycle. Past it, calls answer `429` with the code `MAX_PUBLIC_API_QUERIED_REACHED` until the cycle renews or the plan changes.  ## Pagination  Every list pages with opaque cursors (AIP-158). Pass `pageSize`, then send the `nextPageToken` of each response back as `pageToken` (or its alias `cursor`) to get the next page. An empty or absent `nextPageToken` means the list is complete. Each list operation describes this in `x-pagination`.  ## Batches and background jobs  `POST /v1/links/bulk` creates up to 250 links in one transactional request; `POST /v1/links/batch` takes the same links as a bare JSON array. `POST /v1/links/bulk/jobs` accepts the same batch and answers `202 Accepted` at once with a job and a `Location` header; poll `GET /v1/jobs/{id}` until `status` is `JOB_STATUS_SUCCEEDED` (the created link ids are in `linksBulkCreate.linkIds`) or `JOB_STATUS_FAILED` (`error` says why, and nothing was created). Jobs can be read for 24 hours after they finish.  ## Versioning and deprecation  The version is in the path: every operation lives under `/v1`. Within a version, changes are additive only: new operations, new optional request fields, new response fields and new enum values. Clients should ignore fields and enum values they do not know. Anything that would break an existing client ships under a new path version instead.  An operation is retired in two steps. First it is deprecated: it keeps working, is flagged `deprecated: true` in this document, and every response carries a `Deprecation` header field (RFC 9745) with the time it was deprecated and a `Link` with `rel=\"deprecation\"` to the policy. Then, at least 180 days later, it may be removed; that date is announced in advance in a `Sunset` header field (RFC 8594) and as `x-sunset` on the operation. The full policy: https://linkbreakers.com/help/article/api-versioning-and-deprecation-policy  ## Idempotent retries  Every POST, PUT and PATCH accepts an optional `Idempotency-Key` header (draft-ietf-httpapi-idempotency-key-header). Send a new unique value, such as a UUID, with each logical request and reuse it only to retry that request. A retry with the same key and the same request returns the first response, marked `Idempotent-Replayed: true`, instead of running again. Keys are scoped to the token and kept for 24 hours. The same key with a different request is refused with `422`, and a retry while the first request is still running gets `409` with `Retry-After`. Server errors (5xx) and refusals such as 401, 403 and 429 are not stored, so retrying them runs the request again.  ## Identifying your client  Send a `Linkbreakers-Client` request header saying which client made the call: `<client>/<version> (<details>)`, for example `my-integration/1.2.0 (python 3.12; linux)`. The official SDKs, the CLI and the MCP bridge set it for you, as `sdk-python/2.3.1 (python 3.12.4; linux)` or `cli/1.4.0 (darwin arm64)`. It is optional and changes nothing about how a request is handled; it tells us which clients and versions are in use, so we know what can be retired and what to fix first. Keep the details short and free of personal data. Browsers may send it too: it is allowed by CORS.
+ * The Linkbreakers REST API: links, QR codes, workflows, visitors and analytics, as JSON over HTTPS. Send a workspace API token as `Authorization: Bearer <token>`.  ## Entry points  `GET https://api.linkbreakers.com/` and `GET https://api.linkbreakers.com/v1` answer without credentials with the API's name, version and links. This document is served at `https://api.linkbreakers.com/openapi.json`.  ## Rate limits  Every response describes where the caller stands in the IETF `RateLimit-Policy` and `RateLimit` header fields (draft-ietf-httpapi-ratelimit-headers), and in `RateLimit-Limit`, `RateLimit-Remaining`, `RateLimit-Reset` and `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset` (a Unix timestamp) for clients that read those. A request past the limit gets `429 Too Many Requests` with `Retry-After` in seconds.  - Workspace API token: 720 requests per 60 seconds, per token. - Dashboard session or OAuth token: 600 requests per 60 seconds, per token. - No credentials: 300 requests per 60 seconds, per client IP.  Each plan also includes a number of API calls per billing cycle. Past it, calls answer `429` with the code `MAX_PUBLIC_API_QUERIED_REACHED` until the cycle renews or the plan changes.  ## Pagination  Every list pages with opaque cursors (AIP-158). Pass `pageSize`, then send the `nextPageToken` of each response back as `pageToken` (or its alias `cursor`) to get the next page. An empty or absent `nextPageToken` means the list is complete. Each list operation describes this in `x-pagination`.  ## Batches and background jobs  `POST /v1/links/bulk` creates up to 250 links in one transactional request; `POST /v1/links/batch` takes the same links as a bare JSON array. `POST /v1/links/bulk/jobs` accepts the same batch and answers `202 Accepted` at once with a job and a `Location` header; poll `GET /v1/jobs/{id}` until `status` is `JOB_STATUS_SUCCEEDED` (the created link ids are in `linksBulkCreate.linkIds`) or `JOB_STATUS_FAILED` (`error` says why, and nothing was created). Jobs can be read for 24 hours after they finish.  ## Versioning and deprecation  The version is in the path: every operation lives under `/v1`. Within a version, changes are additive only: new operations, new optional request fields, new response fields and new enum values. Clients should ignore fields and enum values they do not know. Anything that would break an existing client ships under a new path version instead.  An operation is retired in two steps. First it is deprecated: it keeps working, is flagged `deprecated: true` in this document, and every response carries a `Deprecation` header field (RFC 9745) with the time it was deprecated and a `Link` with `rel=\"deprecation\"` to the policy. Then, at least 180 days later, it may be removed; that date is announced in advance in a `Sunset` header field (RFC 8594) and as `x-sunset` on the operation. The full policy: https://linkbreakers.com/help/article/api-versioning-and-deprecation-policy  A renamed operation keeps answering its former path until that path's sunset. Responses on a former path carry the same `Deprecation`, `Sunset` and `Link` header fields; this document lists only the current path, and the policy lists the former ones.  ## Idempotent retries  Every POST, PUT and PATCH accepts an optional `Idempotency-Key` header (draft-ietf-httpapi-idempotency-key-header). Send a new unique value, such as a UUID, with each logical request and reuse it only to retry that request. A retry with the same key and the same request returns the first response, marked `Idempotent-Replayed: true`, instead of running again. Keys are scoped to the token and kept for 24 hours. The same key with a different request is refused with `422`, and a retry while the first request is still running gets `409` with `Retry-After`. Server errors (5xx) and refusals such as 401, 403 and 429 are not stored, so retrying them runs the request again.  ## Identifying your client  Send a `Linkbreakers-Client` request header saying which client made the call: `<client>/<version> (<details>)`, for example `my-integration/1.2.0 (python 3.12; linux)`. The official SDKs, the CLI and the MCP bridge set it for you, as `sdk-python/2.3.1 (python 3.12.4; linux)` or `cli/1.4.0 (darwin arm64)`. It is optional and changes nothing about how a request is handled; it tells us which clients and versions are in use, so we know what can be retired and what to fix first. Keep the details short and free of personal data. Browsers may send it too: it is allowed by CORS.
  *
- * The version of the OpenAPI document: 1.198.0
+ * The version of the OpenAPI document: 1.198.1
  * 
  * Generated by: https://openapi-generator.tech
  */
@@ -15,63 +15,63 @@ use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
 
-/// struct for typed errors of method [`analytics_dashboard_service_create_dashboard`]
+/// struct for typed errors of method [`analytics_dashboards_service_create`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum AnalyticsDashboardServiceCreateDashboardError {
+pub enum AnalyticsDashboardsServiceCreateError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`analytics_dashboard_service_delete_dashboard`]
+/// struct for typed errors of method [`analytics_dashboards_service_delete`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum AnalyticsDashboardServiceDeleteDashboardError {
+pub enum AnalyticsDashboardsServiceDeleteError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`analytics_dashboard_service_generate_widget_summary`]
+/// struct for typed errors of method [`analytics_dashboards_service_generate_widget_summary`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum AnalyticsDashboardServiceGenerateWidgetSummaryError {
+pub enum AnalyticsDashboardsServiceGenerateWidgetSummaryError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`analytics_dashboard_service_get_widget_summary`]
+/// struct for typed errors of method [`analytics_dashboards_service_get_widget_summary`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum AnalyticsDashboardServiceGetWidgetSummaryError {
+pub enum AnalyticsDashboardsServiceGetWidgetSummaryError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`analytics_dashboard_service_list_dashboards`]
+/// struct for typed errors of method [`analytics_dashboards_service_list`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum AnalyticsDashboardServiceListDashboardsError {
+pub enum AnalyticsDashboardsServiceListError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`analytics_dashboard_service_update_dashboard`]
+/// struct for typed errors of method [`analytics_dashboards_service_update`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum AnalyticsDashboardServiceUpdateDashboardError {
+pub enum AnalyticsDashboardsServiceUpdateError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
 
-/// Requires the `analytics:write` scope.
-pub async fn analytics_dashboard_service_create_dashboard(configuration: &configuration::Configuration, create_dashboard_request: models::CreateDashboardRequest, idempotency_key: Option<&str>) -> Result<models::CreateDashboardResponse, Error<AnalyticsDashboardServiceCreateDashboardError>> {
+/// Create a dashboard with its widgets, for the whole workspace or scoped to one link.  Requires the `analytics:write` scope.
+pub async fn analytics_dashboards_service_create(configuration: &configuration::Configuration, create_dashboard_request: models::CreateDashboardRequest, idempotency_key: Option<&str>) -> Result<models::CreateDashboardResponse, Error<AnalyticsDashboardsServiceCreateError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_body_create_dashboard_request = create_dashboard_request;
     let p_header_idempotency_key = idempotency_key;
@@ -113,13 +113,13 @@ pub async fn analytics_dashboard_service_create_dashboard(configuration: &config
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<AnalyticsDashboardServiceCreateDashboardError> = serde_json::from_str(&content).ok();
+        let entity: Option<AnalyticsDashboardsServiceCreateError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Delete a dashboard and its associated assistant conversation.  Requires the `analytics:write` scope.
-pub async fn analytics_dashboard_service_delete_dashboard(configuration: &configuration::Configuration, id: &str) -> Result<serde_json::Value, Error<AnalyticsDashboardServiceDeleteDashboardError>> {
+pub async fn analytics_dashboards_service_delete(configuration: &configuration::Configuration, id: &str) -> Result<serde_json::Value, Error<AnalyticsDashboardsServiceDeleteError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
 
@@ -156,17 +156,17 @@ pub async fn analytics_dashboard_service_delete_dashboard(configuration: &config
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<AnalyticsDashboardServiceDeleteDashboardError> = serde_json::from_str(&content).ok();
+        let entity: Option<AnalyticsDashboardsServiceDeleteError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Analyses the widget's current values and stores the result. Consumes platform credits, so it runs only when requested.  Requires the `analytics:write` scope.
-pub async fn analytics_dashboard_service_generate_widget_summary(configuration: &configuration::Configuration, dashboard_id: &str, widget_id: &str, analytics_dashboard_service_generate_widget_summary_body: models::AnalyticsDashboardServiceGenerateWidgetSummaryBody, idempotency_key: Option<&str>) -> Result<models::GenerateWidgetSummaryResponse, Error<AnalyticsDashboardServiceGenerateWidgetSummaryError>> {
+pub async fn analytics_dashboards_service_generate_widget_summary(configuration: &configuration::Configuration, dashboard_id: &str, widget_id: &str, analytics_dashboards_service_generate_widget_summary_body: models::AnalyticsDashboardsServiceGenerateWidgetSummaryBody, idempotency_key: Option<&str>) -> Result<models::GenerateWidgetSummaryResponse, Error<AnalyticsDashboardsServiceGenerateWidgetSummaryError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_dashboard_id = dashboard_id;
     let p_path_widget_id = widget_id;
-    let p_body_analytics_dashboard_service_generate_widget_summary_body = analytics_dashboard_service_generate_widget_summary_body;
+    let p_body_analytics_dashboards_service_generate_widget_summary_body = analytics_dashboards_service_generate_widget_summary_body;
     let p_header_idempotency_key = idempotency_key;
 
     let uri_str = format!("{}/v1/analytics/dashboards/{dashboardId}/widgets/{widgetId}/summary", configuration.base_path, dashboardId=crate::apis::urlencode(p_path_dashboard_id), widgetId=crate::apis::urlencode(p_path_widget_id));
@@ -184,7 +184,7 @@ pub async fn analytics_dashboard_service_generate_widget_summary(configuration: 
     if let Some(ref token) = configuration.bearer_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    req_builder = req_builder.json(&p_body_analytics_dashboard_service_generate_widget_summary_body);
+    req_builder = req_builder.json(&p_body_analytics_dashboards_service_generate_widget_summary_body);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -206,13 +206,13 @@ pub async fn analytics_dashboard_service_generate_widget_summary(configuration: 
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<AnalyticsDashboardServiceGenerateWidgetSummaryError> = serde_json::from_str(&content).ok();
+        let entity: Option<AnalyticsDashboardsServiceGenerateWidgetSummaryError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Returns the last generated analysis, and whether the underlying values have changed since.  Requires the `analytics:read` scope.
-pub async fn analytics_dashboard_service_get_widget_summary(configuration: &configuration::Configuration, dashboard_id: &str, widget_id: &str) -> Result<models::GetWidgetSummaryResponse, Error<AnalyticsDashboardServiceGetWidgetSummaryError>> {
+pub async fn analytics_dashboards_service_get_widget_summary(configuration: &configuration::Configuration, dashboard_id: &str, widget_id: &str) -> Result<models::GetWidgetSummaryResponse, Error<AnalyticsDashboardsServiceGetWidgetSummaryError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_dashboard_id = dashboard_id;
     let p_path_widget_id = widget_id;
@@ -250,13 +250,13 @@ pub async fn analytics_dashboard_service_get_widget_summary(configuration: &conf
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<AnalyticsDashboardServiceGetWidgetSummaryError> = serde_json::from_str(&content).ok();
+        let entity: Option<AnalyticsDashboardsServiceGetWidgetSummaryError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
-/// Requires the `analytics:read` scope.
-pub async fn analytics_dashboard_service_list_dashboards(configuration: &configuration::Configuration, link_id: Option<&str>, scope: Option<&str>, page_size: Option<i64>, page_token: Option<&str>, cursor: Option<&str>) -> Result<models::ListDashboardsResponse, Error<AnalyticsDashboardServiceListDashboardsError>> {
+/// List the workspace's analytics dashboards: the workspace-wide one and those scoped to a link. Filter by link or by scope.  Requires the `analytics:read` scope.
+pub async fn analytics_dashboards_service_list(configuration: &configuration::Configuration, link_id: Option<&str>, scope: Option<&str>, page_size: Option<i64>, page_token: Option<&str>, cursor: Option<&str>) -> Result<models::ListDashboardsResponse, Error<AnalyticsDashboardsServiceListError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_link_id = link_id;
     let p_query_scope = scope;
@@ -312,16 +312,16 @@ pub async fn analytics_dashboard_service_list_dashboards(configuration: &configu
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<AnalyticsDashboardServiceListDashboardsError> = serde_json::from_str(&content).ok();
+        let entity: Option<AnalyticsDashboardsServiceListError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
-/// Requires the `analytics:write` scope.
-pub async fn analytics_dashboard_service_update_dashboard(configuration: &configuration::Configuration, id: &str, analytics_dashboard_service_update_dashboard_body: models::AnalyticsDashboardServiceUpdateDashboardBody, idempotency_key: Option<&str>) -> Result<models::UpdateDashboardResponse, Error<AnalyticsDashboardServiceUpdateDashboardError>> {
+/// Replace a dashboard's name and its widget configuration. Each widget names its own data source and visualization.  Requires the `analytics:write` scope.
+pub async fn analytics_dashboards_service_update(configuration: &configuration::Configuration, id: &str, analytics_dashboards_service_update_body: models::AnalyticsDashboardsServiceUpdateBody, idempotency_key: Option<&str>) -> Result<models::UpdateDashboardResponse, Error<AnalyticsDashboardsServiceUpdateError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
-    let p_body_analytics_dashboard_service_update_dashboard_body = analytics_dashboard_service_update_dashboard_body;
+    let p_body_analytics_dashboards_service_update_body = analytics_dashboards_service_update_body;
     let p_header_idempotency_key = idempotency_key;
 
     let uri_str = format!("{}/v1/analytics/dashboards/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
@@ -339,7 +339,7 @@ pub async fn analytics_dashboard_service_update_dashboard(configuration: &config
     if let Some(ref token) = configuration.bearer_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    req_builder = req_builder.json(&p_body_analytics_dashboard_service_update_dashboard_body);
+    req_builder = req_builder.json(&p_body_analytics_dashboards_service_update_body);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -361,7 +361,7 @@ pub async fn analytics_dashboard_service_update_dashboard(configuration: &config
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<AnalyticsDashboardServiceUpdateDashboardError> = serde_json::from_str(&content).ok();
+        let entity: Option<AnalyticsDashboardsServiceUpdateError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }

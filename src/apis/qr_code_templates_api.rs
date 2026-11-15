@@ -1,9 +1,9 @@
 /*
  * Linkbreakers API
  *
- * This is a documentation of all the APIs of Linkbreakers  ## Entry points  `GET https://api.linkbreakers.com/` and `GET https://api.linkbreakers.com/v1` answer without credentials with the API's name, version and links. This document is served at `https://api.linkbreakers.com/openapi.json`.  ## Rate limits  Every response describes where the caller stands in the IETF `RateLimit-Policy` and `RateLimit` header fields (draft-ietf-httpapi-ratelimit-headers), and in `RateLimit-Limit`, `RateLimit-Remaining`, `RateLimit-Reset` and `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset` (a Unix timestamp) for clients that read those. A request past the limit gets `429 Too Many Requests` with `Retry-After` in seconds.  - Workspace API token: 720 requests per 60 seconds, per token. - Dashboard session or OAuth token: 600 requests per 60 seconds, per token. - No credentials: 300 requests per 60 seconds, per client IP.  Each plan also includes a number of API calls per billing cycle. Past it, calls answer `429` with the code `MAX_PUBLIC_API_QUERIED_REACHED` until the cycle renews or the plan changes.  ## Pagination  Every list pages with opaque cursors (AIP-158). Pass `pageSize`, then send the `nextPageToken` of each response back as `pageToken` (or its alias `cursor`) to get the next page. An empty or absent `nextPageToken` means the list is complete. Each list operation describes this in `x-pagination`.  ## Batches and background jobs  `POST /v1/links/bulk` creates up to 250 links in one transactional request; `POST /v1/links/batch` takes the same links as a bare JSON array. `POST /v1/links/bulk/jobs` accepts the same batch and answers `202 Accepted` at once with a job and a `Location` header; poll `GET /v1/jobs/{id}` until `status` is `JOB_STATUS_SUCCEEDED` (the created link ids are in `linksBulkCreate.linkIds`) or `JOB_STATUS_FAILED` (`error` says why, and nothing was created). Jobs can be read for 24 hours after they finish.  ## Versioning and deprecation  The version is in the path: every operation lives under `/v1`. Within a version, changes are additive only: new operations, new optional request fields, new response fields and new enum values. Clients should ignore fields and enum values they do not know. Anything that would break an existing client ships under a new path version instead.  An operation is retired in two steps. First it is deprecated: it keeps working, is flagged `deprecated: true` in this document, and every response carries a `Deprecation` header field (RFC 9745) with the time it was deprecated and a `Link` with `rel=\"deprecation\"` to the policy. Then, at least 180 days later, it may be removed; that date is announced in advance in a `Sunset` header field (RFC 8594) and as `x-sunset` on the operation. The full policy: https://linkbreakers.com/help/article/api-versioning-and-deprecation-policy  ## Idempotent retries  Every POST, PUT and PATCH accepts an optional `Idempotency-Key` header (draft-ietf-httpapi-idempotency-key-header). Send a new unique value, such as a UUID, with each logical request and reuse it only to retry that request. A retry with the same key and the same request returns the first response, marked `Idempotent-Replayed: true`, instead of running again. Keys are scoped to the token and kept for 24 hours. The same key with a different request is refused with `422`, and a retry while the first request is still running gets `409` with `Retry-After`. Server errors (5xx) and refusals such as 401, 403 and 429 are not stored, so retrying them runs the request again.  ## Identifying your client  Send a `Linkbreakers-Client` request header saying which client made the call: `<client>/<version> (<details>)`, for example `my-integration/1.2.0 (python 3.12; linux)`. The official SDKs, the CLI and the MCP bridge set it for you, as `sdk-python/2.3.1 (python 3.12.4; linux)` or `cli/1.4.0 (darwin arm64)`. It is optional and changes nothing about how a request is handled; it tells us which clients and versions are in use, so we know what can be retired and what to fix first. Keep the details short and free of personal data. Browsers may send it too: it is allowed by CORS.
+ * The Linkbreakers REST API: links, QR codes, workflows, visitors and analytics, as JSON over HTTPS. Send a workspace API token as `Authorization: Bearer <token>`.  ## Entry points  `GET https://api.linkbreakers.com/` and `GET https://api.linkbreakers.com/v1` answer without credentials with the API's name, version and links. This document is served at `https://api.linkbreakers.com/openapi.json`.  ## Rate limits  Every response describes where the caller stands in the IETF `RateLimit-Policy` and `RateLimit` header fields (draft-ietf-httpapi-ratelimit-headers), and in `RateLimit-Limit`, `RateLimit-Remaining`, `RateLimit-Reset` and `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset` (a Unix timestamp) for clients that read those. A request past the limit gets `429 Too Many Requests` with `Retry-After` in seconds.  - Workspace API token: 720 requests per 60 seconds, per token. - Dashboard session or OAuth token: 600 requests per 60 seconds, per token. - No credentials: 300 requests per 60 seconds, per client IP.  Each plan also includes a number of API calls per billing cycle. Past it, calls answer `429` with the code `MAX_PUBLIC_API_QUERIED_REACHED` until the cycle renews or the plan changes.  ## Pagination  Every list pages with opaque cursors (AIP-158). Pass `pageSize`, then send the `nextPageToken` of each response back as `pageToken` (or its alias `cursor`) to get the next page. An empty or absent `nextPageToken` means the list is complete. Each list operation describes this in `x-pagination`.  ## Batches and background jobs  `POST /v1/links/bulk` creates up to 250 links in one transactional request; `POST /v1/links/batch` takes the same links as a bare JSON array. `POST /v1/links/bulk/jobs` accepts the same batch and answers `202 Accepted` at once with a job and a `Location` header; poll `GET /v1/jobs/{id}` until `status` is `JOB_STATUS_SUCCEEDED` (the created link ids are in `linksBulkCreate.linkIds`) or `JOB_STATUS_FAILED` (`error` says why, and nothing was created). Jobs can be read for 24 hours after they finish.  ## Versioning and deprecation  The version is in the path: every operation lives under `/v1`. Within a version, changes are additive only: new operations, new optional request fields, new response fields and new enum values. Clients should ignore fields and enum values they do not know. Anything that would break an existing client ships under a new path version instead.  An operation is retired in two steps. First it is deprecated: it keeps working, is flagged `deprecated: true` in this document, and every response carries a `Deprecation` header field (RFC 9745) with the time it was deprecated and a `Link` with `rel=\"deprecation\"` to the policy. Then, at least 180 days later, it may be removed; that date is announced in advance in a `Sunset` header field (RFC 8594) and as `x-sunset` on the operation. The full policy: https://linkbreakers.com/help/article/api-versioning-and-deprecation-policy  A renamed operation keeps answering its former path until that path's sunset. Responses on a former path carry the same `Deprecation`, `Sunset` and `Link` header fields; this document lists only the current path, and the policy lists the former ones.  ## Idempotent retries  Every POST, PUT and PATCH accepts an optional `Idempotency-Key` header (draft-ietf-httpapi-idempotency-key-header). Send a new unique value, such as a UUID, with each logical request and reuse it only to retry that request. A retry with the same key and the same request returns the first response, marked `Idempotent-Replayed: true`, instead of running again. Keys are scoped to the token and kept for 24 hours. The same key with a different request is refused with `422`, and a retry while the first request is still running gets `409` with `Retry-After`. Server errors (5xx) and refusals such as 401, 403 and 429 are not stored, so retrying them runs the request again.  ## Identifying your client  Send a `Linkbreakers-Client` request header saying which client made the call: `<client>/<version> (<details>)`, for example `my-integration/1.2.0 (python 3.12; linux)`. The official SDKs, the CLI and the MCP bridge set it for you, as `sdk-python/2.3.1 (python 3.12.4; linux)` or `cli/1.4.0 (darwin arm64)`. It is optional and changes nothing about how a request is handled; it tells us which clients and versions are in use, so we know what can be retired and what to fix first. Keep the details short and free of personal data. Browsers may send it too: it is allowed by CORS.
  *
- * The version of the OpenAPI document: 1.198.0
+ * The version of the OpenAPI document: 1.198.1
  * 
  * Generated by: https://openapi-generator.tech
  */
@@ -15,91 +15,82 @@ use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
 
-/// struct for typed errors of method [`qrcode_templates_service_create_qrcode_template`]
+/// struct for typed errors of method [`qrcode_templates_service_create`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum QrcodeTemplatesServiceCreateQrcodeTemplateError {
+pub enum QrcodeTemplatesServiceCreateError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`qrcode_templates_service_delete_qrcode_template`]
+/// struct for typed errors of method [`qrcode_templates_service_delete`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum QrcodeTemplatesServiceDeleteQrcodeTemplateError {
+pub enum QrcodeTemplatesServiceDeleteError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`qrcode_templates_service_get_qrcode_template`]
+/// struct for typed errors of method [`qrcode_templates_service_get`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum QrcodeTemplatesServiceGetQrcodeTemplateError {
+pub enum QrcodeTemplatesServiceGetError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`qrcode_templates_service_import_qrcode_template`]
+/// struct for typed errors of method [`qrcode_templates_service_get_public`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum QrcodeTemplatesServiceImportQrcodeTemplateError {
+pub enum QrcodeTemplatesServiceGetPublicError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`qrcode_templates_service_list_qrcode_templates`]
+/// struct for typed errors of method [`qrcode_templates_service_import`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum QrcodeTemplatesServiceListQrcodeTemplatesError {
+pub enum QrcodeTemplatesServiceImportError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`qrcode_templates_service_public_get_qrcode_template`]
+/// struct for typed errors of method [`qrcode_templates_service_list`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum QrcodeTemplatesServicePublicGetQrcodeTemplateError {
+pub enum QrcodeTemplatesServiceListError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`qrcode_templates_service_public_list_qrcode_templates`]
+/// struct for typed errors of method [`qrcode_templates_service_list_public`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum QrcodeTemplatesServicePublicListQrcodeTemplatesError {
+pub enum QrcodeTemplatesServiceListPublicError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`qrcode_templates_service_publish_qrcode_template`]
+/// struct for typed errors of method [`qrcode_templates_service_publish`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum QrcodeTemplatesServicePublishQrcodeTemplateError {
+pub enum QrcodeTemplatesServicePublishError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`qrcode_templates_service_resolve_qrcode_template_images`]
+/// struct for typed errors of method [`qrcode_templates_service_update`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum QrcodeTemplatesServiceResolveQrcodeTemplateImagesError {
-    Status429(models::ErrorResponse),
-    DefaultResponse(models::ErrorResponse),
-    UnknownValue(serde_json::Value),
-}
-
-/// struct for typed errors of method [`qrcode_templates_service_update_qrcode_template`]
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(untagged)]
-pub enum QrcodeTemplatesServiceUpdateQrcodeTemplateError {
+pub enum QrcodeTemplatesServiceUpdateError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
@@ -107,7 +98,7 @@ pub enum QrcodeTemplatesServiceUpdateQrcodeTemplateError {
 
 
 /// Create a new QR code template using a fresh design. The design must not be used by any other links or templates.  Requires the `qrcodes:write` scope.
-pub async fn qrcode_templates_service_create_qrcode_template(configuration: &configuration::Configuration, create_qrcode_template_request: models::CreateQrcodeTemplateRequest, idempotency_key: Option<&str>) -> Result<models::CreateQrcodeTemplateResponse, Error<QrcodeTemplatesServiceCreateQrcodeTemplateError>> {
+pub async fn qrcode_templates_service_create(configuration: &configuration::Configuration, create_qrcode_template_request: models::CreateQrcodeTemplateRequest, idempotency_key: Option<&str>) -> Result<models::CreateQrcodeTemplateResponse, Error<QrcodeTemplatesServiceCreateError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_body_create_qrcode_template_request = create_qrcode_template_request;
     let p_header_idempotency_key = idempotency_key;
@@ -149,13 +140,13 @@ pub async fn qrcode_templates_service_create_qrcode_template(configuration: &con
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<QrcodeTemplatesServiceCreateQrcodeTemplateError> = serde_json::from_str(&content).ok();
+        let entity: Option<QrcodeTemplatesServiceCreateError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Remove a QR code template belonging to the authenticated caller's workspace.  Requires the `qrcodes:write` scope.
-pub async fn qrcode_templates_service_delete_qrcode_template(configuration: &configuration::Configuration, id: &str) -> Result<serde_json::Value, Error<QrcodeTemplatesServiceDeleteQrcodeTemplateError>> {
+pub async fn qrcode_templates_service_delete(configuration: &configuration::Configuration, id: &str) -> Result<serde_json::Value, Error<QrcodeTemplatesServiceDeleteError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
 
@@ -192,13 +183,13 @@ pub async fn qrcode_templates_service_delete_qrcode_template(configuration: &con
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<QrcodeTemplatesServiceDeleteQrcodeTemplateError> = serde_json::from_str(&content).ok();
+        let entity: Option<QrcodeTemplatesServiceDeleteError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Retrieve a QR code template that belongs to the authenticated caller's workspace.  Requires the `qrcodes:read` scope.
-pub async fn qrcode_templates_service_get_qrcode_template(configuration: &configuration::Configuration, id: &str, include: Option<Vec<String>>) -> Result<models::QrcodeTemplate, Error<QrcodeTemplatesServiceGetQrcodeTemplateError>> {
+pub async fn qrcode_templates_service_get(configuration: &configuration::Configuration, id: &str, include: Option<Vec<String>>) -> Result<models::QrcodeTemplate, Error<QrcodeTemplatesServiceGetError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_query_include = include;
@@ -242,13 +233,57 @@ pub async fn qrcode_templates_service_get_qrcode_template(configuration: &config
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<QrcodeTemplatesServiceGetQrcodeTemplateError> = serde_json::from_str(&content).ok();
+        let entity: Option<QrcodeTemplatesServiceGetError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
+    }
+}
+
+/// Retrieve a single published QR code template that is visible in the public gallery.
+pub async fn qrcode_templates_service_get_public(configuration: &configuration::Configuration, slug: &str, include: Option<Vec<String>>) -> Result<models::PublicQrcodeTemplate, Error<QrcodeTemplatesServiceGetPublicError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_slug = slug;
+    let p_query_include = include;
+
+    let uri_str = format!("{}/v1/public/qrcode-templates/{slug}", configuration.base_path, slug=crate::apis::urlencode(p_path_slug));
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref param_value) = p_query_include {
+        req_builder = match "multi" {
+            "multi" => req_builder.query(&param_value.into_iter().map(|p| ("include".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
+            _ => req_builder.query(&[("include", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
+        };
+    }
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::PublicQrcodeTemplate`"))),
+            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::PublicQrcodeTemplate`")))),
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<QrcodeTemplatesServiceGetPublicError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Import a public QR code template into your workspace by slug. Creates a private copy owned by your workspace.  Requires the `qrcodes:write` scope.
-pub async fn qrcode_templates_service_import_qrcode_template(configuration: &configuration::Configuration, import_qrcode_template_request: models::ImportQrcodeTemplateRequest, idempotency_key: Option<&str>) -> Result<models::ImportQrcodeTemplateResponse, Error<QrcodeTemplatesServiceImportQrcodeTemplateError>> {
+pub async fn qrcode_templates_service_import(configuration: &configuration::Configuration, import_qrcode_template_request: models::ImportQrcodeTemplateRequest, idempotency_key: Option<&str>) -> Result<models::ImportQrcodeTemplateResponse, Error<QrcodeTemplatesServiceImportError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_body_import_qrcode_template_request = import_qrcode_template_request;
     let p_header_idempotency_key = idempotency_key;
@@ -290,13 +325,13 @@ pub async fn qrcode_templates_service_import_qrcode_template(configuration: &con
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<QrcodeTemplatesServiceImportQrcodeTemplateError> = serde_json::from_str(&content).ok();
+        let entity: Option<QrcodeTemplatesServiceImportError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Retrieve QR code templates that belong to the authenticated caller's workspace.  Requires the `qrcodes:read` scope.
-pub async fn qrcode_templates_service_list_qrcode_templates(configuration: &configuration::Configuration, include: Option<Vec<String>>, search: Option<&str>, page_size: Option<i64>, page_token: Option<&str>, scope: Option<&str>, cursor: Option<&str>) -> Result<models::ListQrcodeTemplatesResponse, Error<QrcodeTemplatesServiceListQrcodeTemplatesError>> {
+pub async fn qrcode_templates_service_list(configuration: &configuration::Configuration, include: Option<Vec<String>>, search: Option<&str>, page_size: Option<i64>, page_token: Option<&str>, scope: Option<&str>, cursor: Option<&str>) -> Result<models::ListQrcodeTemplatesResponse, Error<QrcodeTemplatesServiceListError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_include = include;
     let p_query_search = search;
@@ -359,57 +394,13 @@ pub async fn qrcode_templates_service_list_qrcode_templates(configuration: &conf
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<QrcodeTemplatesServiceListQrcodeTemplatesError> = serde_json::from_str(&content).ok();
-        Err(Error::ResponseError(ResponseContent { status, content, entity }))
-    }
-}
-
-/// Retrieve a single published QR code template that is visible in the public gallery.
-pub async fn qrcode_templates_service_public_get_qrcode_template(configuration: &configuration::Configuration, slug: &str, include: Option<Vec<String>>) -> Result<models::PublicQrcodeTemplate, Error<QrcodeTemplatesServicePublicGetQrcodeTemplateError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_path_slug = slug;
-    let p_query_include = include;
-
-    let uri_str = format!("{}/v1/public/qrcode-templates/{slug}", configuration.base_path, slug=crate::apis::urlencode(p_path_slug));
-    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
-
-    if let Some(ref param_value) = p_query_include {
-        req_builder = match "multi" {
-            "multi" => req_builder.query(&param_value.into_iter().map(|p| ("include".to_owned(), p.to_string())).collect::<Vec<(std::string::String, std::string::String)>>()),
-            _ => req_builder.query(&[("include", &param_value.into_iter().map(|p| p.to_string()).collect::<Vec<String>>().join(",").to_string())]),
-        };
-    }
-    if let Some(ref user_agent) = configuration.user_agent {
-        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
-    }
-
-    let req = req_builder.build()?;
-    let resp = configuration.client.execute(req).await?;
-
-    let status = resp.status();
-    let content_type = resp
-        .headers()
-        .get("content-type")
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("application/octet-stream");
-    let content_type = super::ContentType::from(content_type);
-
-    if !status.is_client_error() && !status.is_server_error() {
-        let content = resp.text().await?;
-        match content_type {
-            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::PublicQrcodeTemplate`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::PublicQrcodeTemplate`")))),
-        }
-    } else {
-        let content = resp.text().await?;
-        let entity: Option<QrcodeTemplatesServicePublicGetQrcodeTemplateError> = serde_json::from_str(&content).ok();
+        let entity: Option<QrcodeTemplatesServiceListError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Retrieve available QR code templates, optionally filtered by search terms or link destination.
-pub async fn qrcode_templates_service_public_list_qrcode_templates(configuration: &configuration::Configuration, include: Option<Vec<String>>, search: Option<&str>, page_size: Option<i64>, page_token: Option<&str>, workspace_id: Option<&str>, cursor: Option<&str>) -> Result<models::PublicListQrcodeTemplatesResponse, Error<QrcodeTemplatesServicePublicListQrcodeTemplatesError>> {
+pub async fn qrcode_templates_service_list_public(configuration: &configuration::Configuration, include: Option<Vec<String>>, search: Option<&str>, page_size: Option<i64>, page_token: Option<&str>, workspace_id: Option<&str>, cursor: Option<&str>) -> Result<models::PublicListQrcodeTemplatesResponse, Error<QrcodeTemplatesServiceListPublicError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_include = include;
     let p_query_search = search;
@@ -466,13 +457,13 @@ pub async fn qrcode_templates_service_public_list_qrcode_templates(configuration
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<QrcodeTemplatesServicePublicListQrcodeTemplatesError> = serde_json::from_str(&content).ok();
+        let entity: Option<QrcodeTemplatesServiceListPublicError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Publish a QR code template to make it available in the public gallery. Requires workspace to be public and template to have slug, description, and name.  Requires the `qrcodes:write` scope.
-pub async fn qrcode_templates_service_publish_qrcode_template(configuration: &configuration::Configuration, id: &str, body: serde_json::Value, idempotency_key: Option<&str>) -> Result<models::PublishQrcodeTemplateResponse, Error<QrcodeTemplatesServicePublishQrcodeTemplateError>> {
+pub async fn qrcode_templates_service_publish(configuration: &configuration::Configuration, id: &str, body: serde_json::Value, idempotency_key: Option<&str>) -> Result<models::PublishQrcodeTemplateResponse, Error<QrcodeTemplatesServicePublishError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
     let p_body_body = body;
@@ -515,64 +506,16 @@ pub async fn qrcode_templates_service_publish_qrcode_template(configuration: &co
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<QrcodeTemplatesServicePublishQrcodeTemplateError> = serde_json::from_str(&content).ok();
-        Err(Error::ResponseError(ResponseContent { status, content, entity }))
-    }
-}
-
-/// Return freshly signed thumbnail URLs for the given templates. The URLs expire, so callers fetch them when they need to render rather than storing them.  Requires the `qrcodes:read` scope.
-pub async fn qrcode_templates_service_resolve_qrcode_template_images(configuration: &configuration::Configuration, resolve_qrcode_template_images_request: models::ResolveQrcodeTemplateImagesRequest, idempotency_key: Option<&str>) -> Result<models::ResolveQrcodeTemplateImagesResponse, Error<QrcodeTemplatesServiceResolveQrcodeTemplateImagesError>> {
-    // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_resolve_qrcode_template_images_request = resolve_qrcode_template_images_request;
-    let p_header_idempotency_key = idempotency_key;
-
-    let uri_str = format!("{}/v1/qrcode-templates/images:resolve", configuration.base_path);
-    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
-
-    if let Some(ref user_agent) = configuration.user_agent {
-        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
-    }
-    if let Some(param_value) = p_header_idempotency_key {
-        req_builder = req_builder.header("Idempotency-Key", param_value.to_string());
-    }
-    if let Some(ref token) = configuration.oauth_access_token {
-        req_builder = req_builder.bearer_auth(token.to_owned());
-    };
-    if let Some(ref token) = configuration.bearer_access_token {
-        req_builder = req_builder.bearer_auth(token.to_owned());
-    };
-    req_builder = req_builder.json(&p_body_resolve_qrcode_template_images_request);
-
-    let req = req_builder.build()?;
-    let resp = configuration.client.execute(req).await?;
-
-    let status = resp.status();
-    let content_type = resp
-        .headers()
-        .get("content-type")
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("application/octet-stream");
-    let content_type = super::ContentType::from(content_type);
-
-    if !status.is_client_error() && !status.is_server_error() {
-        let content = resp.text().await?;
-        match content_type {
-            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::ResolveQrcodeTemplateImagesResponse`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::ResolveQrcodeTemplateImagesResponse`")))),
-        }
-    } else {
-        let content = resp.text().await?;
-        let entity: Option<QrcodeTemplatesServiceResolveQrcodeTemplateImagesError> = serde_json::from_str(&content).ok();
+        let entity: Option<QrcodeTemplatesServicePublishError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Modify the name or description of a QR code template owned by the authenticated workspace.  Requires the `qrcodes:write` scope.
-pub async fn qrcode_templates_service_update_qrcode_template(configuration: &configuration::Configuration, id: &str, qrcode_templates_service_update_qrcode_template_body: models::QrcodeTemplatesServiceUpdateQrcodeTemplateBody, idempotency_key: Option<&str>) -> Result<models::UpdateQrcodeTemplateResponse, Error<QrcodeTemplatesServiceUpdateQrcodeTemplateError>> {
+pub async fn qrcode_templates_service_update(configuration: &configuration::Configuration, id: &str, qrcode_templates_service_update_body: models::QrcodeTemplatesServiceUpdateBody, idempotency_key: Option<&str>) -> Result<models::UpdateQrcodeTemplateResponse, Error<QrcodeTemplatesServiceUpdateError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_id = id;
-    let p_body_qrcode_templates_service_update_qrcode_template_body = qrcode_templates_service_update_qrcode_template_body;
+    let p_body_qrcode_templates_service_update_body = qrcode_templates_service_update_body;
     let p_header_idempotency_key = idempotency_key;
 
     let uri_str = format!("{}/v1/qrcode-templates/{id}", configuration.base_path, id=crate::apis::urlencode(p_path_id));
@@ -590,7 +533,7 @@ pub async fn qrcode_templates_service_update_qrcode_template(configuration: &con
     if let Some(ref token) = configuration.bearer_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    req_builder = req_builder.json(&p_body_qrcode_templates_service_update_qrcode_template_body);
+    req_builder = req_builder.json(&p_body_qrcode_templates_service_update_body);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -612,7 +555,7 @@ pub async fn qrcode_templates_service_update_qrcode_template(configuration: &con
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<QrcodeTemplatesServiceUpdateQrcodeTemplateError> = serde_json::from_str(&content).ok();
+        let entity: Option<QrcodeTemplatesServiceUpdateError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }

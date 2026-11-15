@@ -1,9 +1,9 @@
 /*
  * Linkbreakers API
  *
- * This is a documentation of all the APIs of Linkbreakers  ## Entry points  `GET https://api.linkbreakers.com/` and `GET https://api.linkbreakers.com/v1` answer without credentials with the API's name, version and links. This document is served at `https://api.linkbreakers.com/openapi.json`.  ## Rate limits  Every response describes where the caller stands in the IETF `RateLimit-Policy` and `RateLimit` header fields (draft-ietf-httpapi-ratelimit-headers), and in `RateLimit-Limit`, `RateLimit-Remaining`, `RateLimit-Reset` and `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset` (a Unix timestamp) for clients that read those. A request past the limit gets `429 Too Many Requests` with `Retry-After` in seconds.  - Workspace API token: 720 requests per 60 seconds, per token. - Dashboard session or OAuth token: 600 requests per 60 seconds, per token. - No credentials: 300 requests per 60 seconds, per client IP.  Each plan also includes a number of API calls per billing cycle. Past it, calls answer `429` with the code `MAX_PUBLIC_API_QUERIED_REACHED` until the cycle renews or the plan changes.  ## Pagination  Every list pages with opaque cursors (AIP-158). Pass `pageSize`, then send the `nextPageToken` of each response back as `pageToken` (or its alias `cursor`) to get the next page. An empty or absent `nextPageToken` means the list is complete. Each list operation describes this in `x-pagination`.  ## Batches and background jobs  `POST /v1/links/bulk` creates up to 250 links in one transactional request; `POST /v1/links/batch` takes the same links as a bare JSON array. `POST /v1/links/bulk/jobs` accepts the same batch and answers `202 Accepted` at once with a job and a `Location` header; poll `GET /v1/jobs/{id}` until `status` is `JOB_STATUS_SUCCEEDED` (the created link ids are in `linksBulkCreate.linkIds`) or `JOB_STATUS_FAILED` (`error` says why, and nothing was created). Jobs can be read for 24 hours after they finish.  ## Versioning and deprecation  The version is in the path: every operation lives under `/v1`. Within a version, changes are additive only: new operations, new optional request fields, new response fields and new enum values. Clients should ignore fields and enum values they do not know. Anything that would break an existing client ships under a new path version instead.  An operation is retired in two steps. First it is deprecated: it keeps working, is flagged `deprecated: true` in this document, and every response carries a `Deprecation` header field (RFC 9745) with the time it was deprecated and a `Link` with `rel=\"deprecation\"` to the policy. Then, at least 180 days later, it may be removed; that date is announced in advance in a `Sunset` header field (RFC 8594) and as `x-sunset` on the operation. The full policy: https://linkbreakers.com/help/article/api-versioning-and-deprecation-policy  ## Idempotent retries  Every POST, PUT and PATCH accepts an optional `Idempotency-Key` header (draft-ietf-httpapi-idempotency-key-header). Send a new unique value, such as a UUID, with each logical request and reuse it only to retry that request. A retry with the same key and the same request returns the first response, marked `Idempotent-Replayed: true`, instead of running again. Keys are scoped to the token and kept for 24 hours. The same key with a different request is refused with `422`, and a retry while the first request is still running gets `409` with `Retry-After`. Server errors (5xx) and refusals such as 401, 403 and 429 are not stored, so retrying them runs the request again.  ## Identifying your client  Send a `Linkbreakers-Client` request header saying which client made the call: `<client>/<version> (<details>)`, for example `my-integration/1.2.0 (python 3.12; linux)`. The official SDKs, the CLI and the MCP bridge set it for you, as `sdk-python/2.3.1 (python 3.12.4; linux)` or `cli/1.4.0 (darwin arm64)`. It is optional and changes nothing about how a request is handled; it tells us which clients and versions are in use, so we know what can be retired and what to fix first. Keep the details short and free of personal data. Browsers may send it too: it is allowed by CORS.
+ * The Linkbreakers REST API: links, QR codes, workflows, visitors and analytics, as JSON over HTTPS. Send a workspace API token as `Authorization: Bearer <token>`.  ## Entry points  `GET https://api.linkbreakers.com/` and `GET https://api.linkbreakers.com/v1` answer without credentials with the API's name, version and links. This document is served at `https://api.linkbreakers.com/openapi.json`.  ## Rate limits  Every response describes where the caller stands in the IETF `RateLimit-Policy` and `RateLimit` header fields (draft-ietf-httpapi-ratelimit-headers), and in `RateLimit-Limit`, `RateLimit-Remaining`, `RateLimit-Reset` and `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset` (a Unix timestamp) for clients that read those. A request past the limit gets `429 Too Many Requests` with `Retry-After` in seconds.  - Workspace API token: 720 requests per 60 seconds, per token. - Dashboard session or OAuth token: 600 requests per 60 seconds, per token. - No credentials: 300 requests per 60 seconds, per client IP.  Each plan also includes a number of API calls per billing cycle. Past it, calls answer `429` with the code `MAX_PUBLIC_API_QUERIED_REACHED` until the cycle renews or the plan changes.  ## Pagination  Every list pages with opaque cursors (AIP-158). Pass `pageSize`, then send the `nextPageToken` of each response back as `pageToken` (or its alias `cursor`) to get the next page. An empty or absent `nextPageToken` means the list is complete. Each list operation describes this in `x-pagination`.  ## Batches and background jobs  `POST /v1/links/bulk` creates up to 250 links in one transactional request; `POST /v1/links/batch` takes the same links as a bare JSON array. `POST /v1/links/bulk/jobs` accepts the same batch and answers `202 Accepted` at once with a job and a `Location` header; poll `GET /v1/jobs/{id}` until `status` is `JOB_STATUS_SUCCEEDED` (the created link ids are in `linksBulkCreate.linkIds`) or `JOB_STATUS_FAILED` (`error` says why, and nothing was created). Jobs can be read for 24 hours after they finish.  ## Versioning and deprecation  The version is in the path: every operation lives under `/v1`. Within a version, changes are additive only: new operations, new optional request fields, new response fields and new enum values. Clients should ignore fields and enum values they do not know. Anything that would break an existing client ships under a new path version instead.  An operation is retired in two steps. First it is deprecated: it keeps working, is flagged `deprecated: true` in this document, and every response carries a `Deprecation` header field (RFC 9745) with the time it was deprecated and a `Link` with `rel=\"deprecation\"` to the policy. Then, at least 180 days later, it may be removed; that date is announced in advance in a `Sunset` header field (RFC 8594) and as `x-sunset` on the operation. The full policy: https://linkbreakers.com/help/article/api-versioning-and-deprecation-policy  A renamed operation keeps answering its former path until that path's sunset. Responses on a former path carry the same `Deprecation`, `Sunset` and `Link` header fields; this document lists only the current path, and the policy lists the former ones.  ## Idempotent retries  Every POST, PUT and PATCH accepts an optional `Idempotency-Key` header (draft-ietf-httpapi-idempotency-key-header). Send a new unique value, such as a UUID, with each logical request and reuse it only to retry that request. A retry with the same key and the same request returns the first response, marked `Idempotent-Replayed: true`, instead of running again. Keys are scoped to the token and kept for 24 hours. The same key with a different request is refused with `422`, and a retry while the first request is still running gets `409` with `Retry-After`. Server errors (5xx) and refusals such as 401, 403 and 429 are not stored, so retrying them runs the request again.  ## Identifying your client  Send a `Linkbreakers-Client` request header saying which client made the call: `<client>/<version> (<details>)`, for example `my-integration/1.2.0 (python 3.12; linux)`. The official SDKs, the CLI and the MCP bridge set it for you, as `sdk-python/2.3.1 (python 3.12.4; linux)` or `cli/1.4.0 (darwin arm64)`. It is optional and changes nothing about how a request is handled; it tells us which clients and versions are in use, so we know what can be retired and what to fix first. Keep the details short and free of personal data. Browsers may send it too: it is allowed by CORS.
  *
- * The version of the OpenAPI document: 1.198.0
+ * The version of the OpenAPI document: 1.198.1
  * 
  * Generated by: https://openapi-generator.tech
  */
@@ -24,19 +24,19 @@ pub enum WorkflowStepsServiceAutoLayoutWorkflowError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`workflow_steps_service_bulk_insert_workflow_step`]
+/// struct for typed errors of method [`workflow_steps_service_bulk_insert`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum WorkflowStepsServiceBulkInsertWorkflowStepError {
+pub enum WorkflowStepsServiceBulkInsertError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`workflow_steps_service_connect_step`]
+/// struct for typed errors of method [`workflow_steps_service_connect`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum WorkflowStepsServiceConnectStepError {
+pub enum WorkflowStepsServiceConnectError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
@@ -60,10 +60,10 @@ pub enum WorkflowStepsServiceDeleteError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`workflow_steps_service_disconnect_step`]
+/// struct for typed errors of method [`workflow_steps_service_disconnect`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum WorkflowStepsServiceDisconnectStepError {
+pub enum WorkflowStepsServiceDisconnectError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
@@ -96,10 +96,10 @@ pub enum WorkflowStepsServiceListError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`workflow_steps_service_resolve_step_collisions`]
+/// struct for typed errors of method [`workflow_steps_service_resolve_collisions`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum WorkflowStepsServiceResolveStepCollisionsError {
+pub enum WorkflowStepsServiceResolveCollisionsError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
@@ -174,7 +174,7 @@ pub async fn workflow_steps_service_auto_layout_workflow(configuration: &configu
 }
 
 /// Inserts the same step, usually a condition, into the workflow of up to 50 links, named by id or short link. Each link succeeds or fails on its own: read the result of each one. Calling again for a link that succeeded inserts a second step. A link with BULK_EDIT_NOT_STARTED was left untouched because the call ran out of time: send those again in a new call.  Requires the `workflows:write` scope.
-pub async fn workflow_steps_service_bulk_insert_workflow_step(configuration: &configuration::Configuration, bulk_insert_workflow_step_request: models::BulkInsertWorkflowStepRequest, idempotency_key: Option<&str>) -> Result<models::BulkInsertWorkflowStepResponse, Error<WorkflowStepsServiceBulkInsertWorkflowStepError>> {
+pub async fn workflow_steps_service_bulk_insert(configuration: &configuration::Configuration, bulk_insert_workflow_step_request: models::BulkInsertWorkflowStepRequest, idempotency_key: Option<&str>) -> Result<models::BulkInsertWorkflowStepResponse, Error<WorkflowStepsServiceBulkInsertError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_body_bulk_insert_workflow_step_request = bulk_insert_workflow_step_request;
     let p_header_idempotency_key = idempotency_key;
@@ -216,18 +216,18 @@ pub async fn workflow_steps_service_bulk_insert_workflow_step(configuration: &co
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<WorkflowStepsServiceBulkInsertWorkflowStepError> = serde_json::from_str(&content).ok();
+        let entity: Option<WorkflowStepsServiceBulkInsertError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Every workflow step is connected the same way: name the branch it leaves from, and the step it leads to.  Atomic steps (redirect, password, form, message page) have exactly one branch, \"next\". Composite steps (multi-link, conditions) have one branch per button, option or range, plus \"else\" for a condition's fallback. Exit steps end the journey and have no branches at all.  Read a step to see its branches, their ids and their current destinations. Idempotent: connecting a branch to the step it already leads to is a no-op.  Requires the `workflows:write` scope.
-pub async fn workflow_steps_service_connect_step(configuration: &configuration::Configuration, link_id: &str, step_id: &str, branch_id: &str, workflow_steps_service_connect_step_body: models::WorkflowStepsServiceConnectStepBody, idempotency_key: Option<&str>) -> Result<models::ConnectWorkflowStepResponse, Error<WorkflowStepsServiceConnectStepError>> {
+pub async fn workflow_steps_service_connect(configuration: &configuration::Configuration, link_id: &str, step_id: &str, branch_id: &str, workflow_steps_service_connect_body: models::WorkflowStepsServiceConnectBody, idempotency_key: Option<&str>) -> Result<models::ConnectWorkflowStepResponse, Error<WorkflowStepsServiceConnectError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_link_id = link_id;
     let p_path_step_id = step_id;
     let p_path_branch_id = branch_id;
-    let p_body_workflow_steps_service_connect_step_body = workflow_steps_service_connect_step_body;
+    let p_body_workflow_steps_service_connect_body = workflow_steps_service_connect_body;
     let p_header_idempotency_key = idempotency_key;
 
     let uri_str = format!("{}/v1/links/{linkId}/workflow-steps/{stepId}/branches/{branchId}/connection", configuration.base_path, linkId=crate::apis::urlencode(p_path_link_id), stepId=crate::apis::urlencode(p_path_step_id), branchId=crate::apis::urlencode(p_path_branch_id));
@@ -245,7 +245,7 @@ pub async fn workflow_steps_service_connect_step(configuration: &configuration::
     if let Some(ref token) = configuration.bearer_access_token {
         req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    req_builder = req_builder.json(&p_body_workflow_steps_service_connect_step_body);
+    req_builder = req_builder.json(&p_body_workflow_steps_service_connect_body);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -267,7 +267,7 @@ pub async fn workflow_steps_service_connect_step(configuration: &configuration::
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<WorkflowStepsServiceConnectStepError> = serde_json::from_str(&content).ok();
+        let entity: Option<WorkflowStepsServiceConnectError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
@@ -365,8 +365,8 @@ pub async fn workflow_steps_service_delete(configuration: &configuration::Config
     }
 }
 
-/// Leaves the branch with no destination. Clearing a branch that is already clear succeeds. See ConnectStep for what a branch id is.  Requires the `workflows:write` scope.
-pub async fn workflow_steps_service_disconnect_step(configuration: &configuration::Configuration, link_id: &str, step_id: &str, branch_id: &str) -> Result<models::DisconnectWorkflowStepResponse, Error<WorkflowStepsServiceDisconnectStepError>> {
+/// Leaves the branch with no destination. Clearing a branch that is already clear succeeds. See Connect for what a branch id is.  Requires the `workflows:write` scope.
+pub async fn workflow_steps_service_disconnect(configuration: &configuration::Configuration, link_id: &str, step_id: &str, branch_id: &str) -> Result<models::DisconnectWorkflowStepResponse, Error<WorkflowStepsServiceDisconnectError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_link_id = link_id;
     let p_path_step_id = step_id;
@@ -405,7 +405,7 @@ pub async fn workflow_steps_service_disconnect_step(configuration: &configuratio
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<WorkflowStepsServiceDisconnectStepError> = serde_json::from_str(&content).ok();
+        let entity: Option<WorkflowStepsServiceDisconnectError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
@@ -454,7 +454,7 @@ pub async fn workflow_steps_service_get(configuration: &configuration::Configura
     }
 }
 
-/// Tells which wallets a contact card's wallet pass option (wallet_pass_enabled) can currently add the card to. A wallet that is not available shows no button to visitors.  Requires the `workflows:read` scope.
+/// Tells which wallets a contact card's wallet pass option (walletPassEnabled) can currently add the card to. A wallet that is not available shows no button to visitors.  Requires the `workflows:read` scope.
 pub async fn workflow_steps_service_get_wallet_pass_support(configuration: &configuration::Configuration, ) -> Result<models::GetWalletPassSupportResponse, Error<WorkflowStepsServiceGetWalletPassSupportError>> {
 
     let uri_str = format!("{}/v1/workflow-steps/wallet-pass-support", configuration.base_path);
@@ -551,7 +551,7 @@ pub async fn workflow_steps_service_list(configuration: &configuration::Configur
 }
 
 /// Pushes overlapping steps away from a given anchor step using iterative radial repulsion. The anchor step stays fixed. Use after adding or moving individual steps to preserve the existing layout.  Requires the `workflows:write` scope.
-pub async fn workflow_steps_service_resolve_step_collisions(configuration: &configuration::Configuration, link_id: &str, step_id: &str, body: serde_json::Value, idempotency_key: Option<&str>) -> Result<models::ResolveStepCollisionsResponse, Error<WorkflowStepsServiceResolveStepCollisionsError>> {
+pub async fn workflow_steps_service_resolve_collisions(configuration: &configuration::Configuration, link_id: &str, step_id: &str, body: serde_json::Value, idempotency_key: Option<&str>) -> Result<models::ResolveStepCollisionsResponse, Error<WorkflowStepsServiceResolveCollisionsError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_link_id = link_id;
     let p_path_step_id = step_id;
@@ -595,7 +595,7 @@ pub async fn workflow_steps_service_resolve_step_collisions(configuration: &conf
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<WorkflowStepsServiceResolveStepCollisionsError> = serde_json::from_str(&content).ok();
+        let entity: Option<WorkflowStepsServiceResolveCollisionsError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
@@ -650,7 +650,7 @@ pub async fn workflow_steps_service_update(configuration: &configuration::Config
     }
 }
 
-/// Requires the `workflows:read` scope.
+/// Check the link's workflow for problems before visitors meet them: a start (Link Visit) that leads nowhere, steps no path from the start reaches, and steps other than exits that lead nowhere. An empty list of issues means the workflow is sound.  Requires the `workflows:read` scope.
 pub async fn workflow_steps_service_validate_workflow(configuration: &configuration::Configuration, link_id: &str) -> Result<models::ValidateWorkflowResponse, Error<WorkflowStepsServiceValidateWorkflowError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_link_id = link_id;
