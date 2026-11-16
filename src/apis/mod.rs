@@ -129,7 +129,6 @@ pub mod media_api;
 pub mod members_api;
 pub mod page_theme_templates_api;
 pub mod page_themes_api;
-pub mod plan_usage_api;
 pub mod pricing_api;
 pub mod qr_code_designs_api;
 pub mod qr_code_templates_api;

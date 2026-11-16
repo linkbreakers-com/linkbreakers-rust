@@ -3,7 +3,7 @@
  *
  * The Linkbreakers REST API: links, QR codes, workflows, visitors and analytics, as JSON over HTTPS. Send a workspace API token as `Authorization: Bearer <token>`.  ## Entry points  `GET https://api.linkbreakers.com/` and `GET https://api.linkbreakers.com/v1` answer without credentials with the API's name, version and links. This document is served at `https://api.linkbreakers.com/openapi.json`.  ## Rate limits  Every response describes where the caller stands in the IETF `RateLimit-Policy` and `RateLimit` header fields (draft-ietf-httpapi-ratelimit-headers), and in `RateLimit-Limit`, `RateLimit-Remaining`, `RateLimit-Reset` and `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset` (a Unix timestamp) for clients that read those. A request past the limit gets `429 Too Many Requests` with `Retry-After` in seconds.  - Workspace API token: 720 requests per 60 seconds, per token. - Dashboard session or OAuth token: 600 requests per 60 seconds, per token. - No credentials: 300 requests per 60 seconds, per client IP.  Each plan also includes a number of API calls per billing cycle. Past it, calls answer `429` with the code `MAX_PUBLIC_API_QUERIED_REACHED` until the cycle renews or the plan changes.  ## Pagination  Every list pages with opaque cursors (AIP-158). Pass `pageSize`, then send the `nextPageToken` of each response back as `pageToken` (or its alias `cursor`) to get the next page. An empty or absent `nextPageToken` means the list is complete. Each list operation describes this in `x-pagination`.  ## Batches and background jobs  `POST /v1/links/bulk` creates up to 250 links in one transactional request; `POST /v1/links/batch` takes the same links as a bare JSON array. `POST /v1/links/bulk/jobs` accepts the same batch and answers `202 Accepted` at once with a job and a `Location` header; poll `GET /v1/jobs/{id}` until `status` is `JOB_STATUS_SUCCEEDED` (the created link ids are in `linksBulkCreate.linkIds`) or `JOB_STATUS_FAILED` (`error` says why, and nothing was created). Jobs can be read for 24 hours after they finish.  ## Paused workspaces  A free workspace whose members have not verified any email address is paused 7 days after sign-up. Its calls then answer `403` with the code `WORKSPACE_UNVERIFIED` and change nothing; QR codes and links keep working for visitors. To lift the pause, ask the workspace owner to verify their email: `POST /v1/members/email-verification` sends the verification email again, and works while the workspace is paused. `unverifiedPauseAt` on the workspace says when the pause starts.  ## Versioning and deprecation  The version is in the path: every operation lives under `/v1`. Within a version, changes are additive only: new operations, new optional request fields, new response fields and new enum values. Clients should ignore fields and enum values they do not know. Anything that would break an existing client ships under a new path version instead.  An operation is retired in two steps. First it is deprecated: it keeps working, is flagged `deprecated: true` in this document, and every response carries a `Deprecation` header field (RFC 9745) with the time it was deprecated and a `Link` with `rel=\"deprecation\"` to the policy. Then, at least 180 days later, it may be removed; that date is announced in advance in a `Sunset` header field (RFC 8594) and as `x-sunset` on the operation. The full policy: https://linkbreakers.com/help/article/api-versioning-and-deprecation-policy  A renamed operation keeps answering its former path while clients still call it, until that path's sunset at the latest: a former path no client calls for 14 days is removed. Responses on a former path carry the same `Deprecation`, `Sunset` and `Link` header fields; this document lists only the current path, and the policy lists the former paths that still answer.  ## Idempotent retries  Every POST, PUT and PATCH accepts an optional `Idempotency-Key` header (draft-ietf-httpapi-idempotency-key-header). Send a new unique value, such as a UUID, with each logical request and reuse it only to retry that request. A retry with the same key and the same request returns the first response, marked `Idempotent-Replayed: true`, instead of running again. Keys are scoped to the token and kept for 24 hours. The same key with a different request is refused with `422`, and a retry while the first request is still running gets `409` with `Retry-After`. Server errors (5xx) and refusals such as 401, 403 and 429 are not stored, so retrying them runs the request again.  ## Identifying your client  Send a `Linkbreakers-Client` request header saying which client made the call: `<client>/<version> (<details>)`, for example `my-integration/1.2.0 (python 3.12; linux)`. The official SDKs, the CLI and the MCP bridge set it for you, as `sdk-python/2.3.1 (python 3.12.4; linux)` or `cli/1.4.0 (darwin arm64)`. It is optional and changes nothing about how a request is handled; it tells us which clients and versions are in use, so we know what can be retired and what to fix first. Keep the details short and free of personal data. Browsers may send it too: it is allowed by CORS.
  *
- * The version of the OpenAPI document: 1.200.1
+ * The version of the OpenAPI document: 1.200.2
  * 
  * Generated by: https://openapi-generator.tech
  */
@@ -14,6 +14,15 @@ use serde::{Deserialize, Serialize, de::Error as _};
 use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
+
+/// struct for typed errors of method [`media_service_complete_public_upload`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum MediaServiceCompletePublicUploadError {
+    Status429(models::ErrorResponse),
+    DefaultResponse(models::ErrorResponse),
+    UnknownValue(serde_json::Value),
+}
 
 /// struct for typed errors of method [`media_service_complete_replace`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -33,10 +42,10 @@ pub enum MediaServiceCompleteUploadError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`media_service_create`]
+/// struct for typed errors of method [`media_service_create_public_upload`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum MediaServiceCreateError {
+pub enum MediaServiceCreatePublicUploadError {
     Status429(models::ErrorResponse),
     DefaultResponse(models::ErrorResponse),
     UnknownValue(serde_json::Value),
@@ -105,6 +114,49 @@ pub enum MediaServiceReplaceImportError {
     UnknownValue(serde_json::Value),
 }
 
+
+/// Checks the image PUT to the uploadUrl of a public upload: its size, and its real format read from its first bytes. When it matches what CreatePublicUpload declared, the upload is ready to be a QR code design's centralImageMediaId within the hour. When it does not, it is discarded and the error says why; start a new upload. Completing an upload that is already ready returns it.
+pub async fn media_service_complete_public_upload(configuration: &configuration::Configuration, id: &str, body: serde_json::Value, idempotency_key: Option<&str>) -> Result<models::CompletePublicMediaUploadResponse, Error<MediaServiceCompletePublicUploadError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_id = id;
+    let p_body_body = body;
+    let p_header_idempotency_key = idempotency_key;
+
+    let uri_str = format!("{}/v1/media/public-uploads/{id}:complete", configuration.base_path, id=crate::apis::urlencode(p_path_id));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(param_value) = p_header_idempotency_key {
+        req_builder = req_builder.header("Idempotency-Key", param_value.to_string());
+    }
+    req_builder = req_builder.json(&p_body_body);
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::CompletePublicMediaUploadResponse`"))),
+            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::CompletePublicMediaUploadResponse`")))),
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<MediaServiceCompletePublicUploadError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
+    }
+}
 
 /// Checks the new file PUT to the replacement's uploadUrl like CompleteUpload does (its size, its real format read from its first bytes, its SHA-256 established by the server), checks again that every use rendered from the media accepts it and that it fits the storage allowance, then swaps it in. The media keeps its id and takes the new file's name, MIME type, kind, size and sha256; its old file is deleted. QR code designs that used the media as their logo keep their current logo and are detached from it; they are returned in detachedReferences. On any refusal the new file is discarded and the media keeps its current file. A new file identical to the media's own changes nothing and returns unchanged true.  Requires the `media:write` scope.
 pub async fn media_service_complete_replace(configuration: &configuration::Configuration, id: &str, replacement_id: &str, body: serde_json::Value, idempotency_key: Option<&str>) -> Result<models::CompleteMediaReplaceResponse, Error<MediaServiceCompleteReplaceError>> {
@@ -205,13 +257,13 @@ pub async fn media_service_complete_upload(configuration: &configuration::Config
     }
 }
 
-/// Uploads a file sent in the request itself, base64 encoded over HTTP, up to 3 MB. Larger files (a PDF brochure, a video) are uploaded straight to storage instead: CreateUpload, a PUT of the file to the returned uploadUrl, then CompleteUpload. A media item only has a kind, read from its bytes: images (PNG, JPEG, WebP, SVG) up to 10 MB, PDF documents up to 25 MB and MP4 videos up to 50 MB. Nothing about where it will be used is needed at upload: any image can then be a QR code logo, a background cover, a badge or a footer logo (up to 3 MB for those), and any media can be opened by an Open media step.  A workspace holds each file once. A file whose bytes (SHA-256) match media the workspace already has is refused with 409 MEDIA_ALREADY_EXISTS; the error's metadata names that media in existingMediaId and existingFileName. Use that media instead of uploading the file again.  Requires the `media:write` scope.
-pub async fn media_service_create(configuration: &configuration::Configuration, create_media_request: models::CreateMediaRequest, idempotency_key: Option<&str>) -> Result<models::CreateMediaResponse, Error<MediaServiceCreateError>> {
+/// Uploads a QR code logo without an API token, for a QR code design created without one (POST /v1/qrcode-designs). It is the same flow as CreateUpload, outside any workspace: declare the image's name, MIME type (image/png, image/jpeg, image/webp or image/svg+xml) and exact size in bytes, at most 3 MB; PUT its bytes to uploadUrl with the uploadHeaders before uploadExpiresAt; then call CompletePublicUpload and pass the media id as the design's centralImageMediaId. Anything but an image of at most 3 MB is refused with MEDIA_NOT_ALLOWED_HERE.  A public upload belongs to no workspace, is never listed and can only be a design's logo. The design keeps its own copy of the image, and the upload itself is deleted an hour after it started, used or not. With an API token, upload with CreateUpload instead.
+pub async fn media_service_create_public_upload(configuration: &configuration::Configuration, create_public_media_upload_request: models::CreatePublicMediaUploadRequest, idempotency_key: Option<&str>) -> Result<models::CreatePublicMediaUploadResponse, Error<MediaServiceCreatePublicUploadError>> {
     // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_create_media_request = create_media_request;
+    let p_body_create_public_media_upload_request = create_public_media_upload_request;
     let p_header_idempotency_key = idempotency_key;
 
-    let uri_str = format!("{}/v1/media", configuration.base_path);
+    let uri_str = format!("{}/v1/media/public-uploads", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -220,13 +272,7 @@ pub async fn media_service_create(configuration: &configuration::Configuration, 
     if let Some(param_value) = p_header_idempotency_key {
         req_builder = req_builder.header("Idempotency-Key", param_value.to_string());
     }
-    if let Some(ref token) = configuration.oauth_access_token {
-        req_builder = req_builder.bearer_auth(token.to_owned());
-    };
-    if let Some(ref token) = configuration.bearer_access_token {
-        req_builder = req_builder.bearer_auth(token.to_owned());
-    };
-    req_builder = req_builder.json(&p_body_create_media_request);
+    req_builder = req_builder.json(&p_body_create_public_media_upload_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -243,12 +289,12 @@ pub async fn media_service_create(configuration: &configuration::Configuration, 
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::CreateMediaResponse`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::CreateMediaResponse`")))),
+            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::CreatePublicMediaUploadResponse`"))),
+            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::CreatePublicMediaUploadResponse`")))),
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<MediaServiceCreateError> = serde_json::from_str(&content).ok();
+        let entity: Option<MediaServiceCreatePublicUploadError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
@@ -302,7 +348,7 @@ pub async fn media_service_create_replace_upload(configuration: &configuration::
     }
 }
 
-/// Reserves a media item for a file uploaded straight to storage, so large files never pass through the API. Declare the file's name, MIME type and exact size in bytes; they are checked against the limit for the file's kind (images up to 10 MB, PDF documents up to 25 MB, MP4 videos up to 50 MB) and against the workspace's storage allowance now, and against the uploaded bytes on completion. Then PUT the file's bytes to uploadUrl with the uploadHeaders (and a Content-Length equal to size) before uploadExpiresAt, and call CompleteUpload. Until completed the media is PENDING: it is not listed and cannot be used. An upload not completed within an hour is discarded.  A workspace holds each file once. Optionally declare sha256, the file's SHA-256 as hex: a file the workspace already holds is then refused here, before any upload, with 409 MEDIA_ALREADY_EXISTS, whose metadata names that media in existingMediaId and existingFileName (use it instead), and storage refuses bytes that do not match the hash, so the PUT must send the x-amz-checksum-sha256 header from uploadHeaders. Without sha256 the duplicate is caught on completion instead.  Requires the `media:write` scope.
+/// The one way to put a file into Linkbreakers: every field that takes a file (an Open media step, a QR code logo, a page theme's background cover, badge or footer logo) takes the id of media uploaded this way, never the file itself. The file goes straight to storage and never passes through the API.  Declare the file's name, MIME type and exact size in bytes; they are checked against the limit for the file's kind (images up to 10 MB, PDF documents up to 25 MB, MP4 videos up to 50 MB) and against the workspace's storage allowance now, and against the uploaded bytes on completion. Then PUT the file's bytes to uploadUrl with the uploadHeaders (and a Content-Length equal to size) before uploadExpiresAt, and call CompleteUpload. Until completed the media is PENDING: it is not listed and cannot be used. An upload not completed within an hour is discarded. A media item only has a kind, read from its bytes: nothing about where it will be used is needed at upload, and any image of at most 3 MB can then be a QR code logo, a background cover, a badge or a footer logo.  A workspace holds each file once. Optionally declare sha256, the file's SHA-256 as hex: a file the workspace already holds is then refused here, before any upload, with 409 MEDIA_ALREADY_EXISTS, whose metadata names that media in existingMediaId and existingFileName (use it instead), and storage refuses bytes that do not match the hash, so the PUT must send the x-amz-checksum-sha256 header from uploadHeaders. Without sha256 the duplicate is caught on completion instead.  Requires the `media:write` scope.
 pub async fn media_service_create_upload(configuration: &configuration::Configuration, create_media_upload_request: models::CreateMediaUploadRequest, idempotency_key: Option<&str>) -> Result<models::CreateMediaUploadResponse, Error<MediaServiceCreateUploadError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_body_create_media_upload_request = create_media_upload_request;
