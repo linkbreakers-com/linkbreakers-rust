@@ -6,12 +6,10 @@ git_push.sh
 src/apis/agents_api.rs
 src/apis/analytics_api.rs
 src/apis/analytics_dashboards_api.rs
-src/apis/api_scopes_api.rs
 src/apis/configuration.rs
 src/apis/custom_domains_api.rs
 src/apis/directories_api.rs
 src/apis/events_api.rs
-src/apis/integrations_api.rs
 src/apis/integrations_contact_tools_api.rs
 src/apis/integrations_forms_api.rs
 src/apis/integrations_google_analytics_api.rs
@@ -117,8 +115,6 @@ src/models/claim_agent_workspace_request.rs
 src/models/client_redirect_payload.rs
 src/models/complete_contact_tool_o_auth_response.rs
 src/models/complete_form_tool_o_auth_response.rs
-src/models/complete_google_forms_o_auth_request.rs
-src/models/complete_google_forms_o_auth_response.rs
 src/models/complete_media_replace_response.rs
 src/models/complete_media_upload_response.rs
 src/models/complete_slack_o_auth_request.rs
@@ -213,7 +209,6 @@ src/models/day_of_week_condition_trace_option.rs
 src/models/day_of_week_option.rs
 src/models/delete_attribute_response.rs
 src/models/delete_visitor_response.rs
-src/models/detected_google_form.rs
 src/models/detected_tool_form.rs
 src/models/device.rs
 src/models/device_actor.rs
@@ -313,8 +308,6 @@ src/models/get_form_tool_o_auth_url_response.rs
 src/models/get_geo_breakdown_request.rs
 src/models/get_geo_breakdown_response.rs
 src/models/get_google_analytics_integration_response.rs
-src/models/get_google_forms_integration_response.rs
-src/models/get_google_forms_o_auth_url_response.rs
 src/models/get_grouped_time_series_request.rs
 src/models/get_grouped_time_series_response.rs
 src/models/get_hour_of_day_distribution_request.rs
@@ -344,9 +337,6 @@ src/models/get_workflow_step_response.rs
 src/models/get_workspace_token_response.rs
 src/models/google_analytics_attribute_keys.rs
 src/models/google_analytics_integration.rs
-src/models/google_forms_integration.rs
-src/models/google_forms_integration_status.rs
-src/models/google_forms_integrations_service_choose_form_link_body.rs
 src/models/googlerpc_status.rs
 src/models/group_by_dimension.rs
 src/models/hour_of_day_data_point.rs
@@ -394,7 +384,6 @@ src/models/list_contact_tool_lists_response.rs
 src/models/list_contact_tool_pipelines_response.rs
 src/models/list_custom_domains_response.rs
 src/models/list_dashboards_response.rs
-src/models/list_detected_google_forms_response.rs
 src/models/list_directories_response.rs
 src/models/list_event_traces_response.rs
 src/models/list_events_csv_response.rs
@@ -559,7 +548,6 @@ src/models/submit_review_reward_request.rs
 src/models/submit_review_reward_response.rs
 src/models/subscription_type.rs
 src/models/switch_workspace_response.rs
-src/models/sync_google_forms_response.rs
 src/models/test_contact_connection_response.rs
 src/models/test_google_analytics_integration_response.rs
 src/models/test_slack_integration_response.rs
@@ -591,8 +579,6 @@ src/models/update_directory_response.rs
 src/models/update_form_connection_response.rs
 src/models/update_google_analytics_integration_request.rs
 src/models/update_google_analytics_integration_response.rs
-src/models/update_google_forms_integration_request.rs
-src/models/update_google_forms_integration_response.rs
 src/models/update_link_response.rs
 src/models/update_link_setting_response.rs
 src/models/update_me_request.rs

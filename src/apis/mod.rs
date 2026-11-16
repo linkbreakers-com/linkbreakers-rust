@@ -111,14 +111,12 @@ impl From<&str> for ContentType {
     }
 }
 
-pub mod api_scopes_api;
 pub mod agents_api;
 pub mod analytics_api;
 pub mod analytics_dashboards_api;
 pub mod custom_domains_api;
 pub mod directories_api;
 pub mod events_api;
-pub mod integrations_api;
 pub mod integrations_contact_tools_api;
 pub mod integrations_forms_api;
 pub mod integrations_google_analytics_api;
