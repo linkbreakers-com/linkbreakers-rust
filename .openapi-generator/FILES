@@ -7,7 +7,6 @@ src/apis/agents_api.rs
 src/apis/analytics_api.rs
 src/apis/analytics_dashboards_api.rs
 src/apis/api_scopes_api.rs
-src/apis/auth_api.rs
 src/apis/configuration.rs
 src/apis/custom_domains_api.rs
 src/apis/directories_api.rs

@@ -115,7 +115,6 @@ pub mod api_scopes_api;
 pub mod agents_api;
 pub mod analytics_api;
 pub mod analytics_dashboards_api;
-pub mod auth_api;
 pub mod custom_domains_api;
 pub mod directories_api;
 pub mod events_api;
