@@ -15,7 +15,6 @@ src/apis/integrations_api.rs
 src/apis/integrations_contact_tools_api.rs
 src/apis/integrations_forms_api.rs
 src/apis/integrations_google_analytics_api.rs
-src/apis/integrations_google_forms_api.rs
 src/apis/integrations_retargeting_pixels_api.rs
 src/apis/integrations_slack_api.rs
 src/apis/jobs_api.rs
@@ -275,6 +274,7 @@ src/models/form_connection_status.rs
 src/models/form_field.rs
 src/models/form_field_option.rs
 src/models/form_field_type.rs
+src/models/form_integrations_service_choose_form_link_body.rs
 src/models/form_integrations_service_complete_o_auth_body.rs
 src/models/form_integrations_service_connect_body.rs
 src/models/form_integrations_service_update_body.rs

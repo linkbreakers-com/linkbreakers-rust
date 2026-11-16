@@ -474,6 +474,8 @@ pub mod form_field_option;
 pub use self::form_field_option::FormFieldOption;
 pub mod form_field_type;
 pub use self::form_field_type::FormFieldType;
+pub mod form_integrations_service_choose_form_link_body;
+pub use self::form_integrations_service_choose_form_link_body::FormIntegrationsServiceChooseFormLinkBody;
 pub mod form_integrations_service_complete_o_auth_body;
 pub use self::form_integrations_service_complete_o_auth_body::FormIntegrationsServiceCompleteOAuthBody;
 pub mod form_integrations_service_connect_body;
