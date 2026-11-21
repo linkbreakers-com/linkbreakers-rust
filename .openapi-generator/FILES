@@ -446,8 +446,14 @@ src/models/page_theme.rs
 src/models/page_theme_badge_shape.rs
 src/models/page_theme_border_style.rs
 src/models/page_theme_canvas_cover_mode.rs
+src/models/page_theme_canvas_texture.rs
+src/models/page_theme_choice_layout.rs
 src/models/page_theme_container_variant.rs
 src/models/page_theme_font_family.rs
+src/models/page_theme_question_style.rs
+src/models/page_theme_role.rs
+src/models/page_theme_role_override.rs
+src/models/page_theme_role_style.rs
 src/models/page_theme_styling.rs
 src/models/page_theme_template.rs
 src/models/page_theme_template_images.rs
