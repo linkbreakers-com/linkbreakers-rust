@@ -122,7 +122,7 @@ pub mod integrations_forms_api;
 pub mod integrations_google_analytics_api;
 pub mod integrations_retargeting_pixels_api;
 pub mod integrations_slack_api;
-pub mod jobs_api;
+pub mod link_jobs_api;
 pub mod link_settings_api;
 pub mod links_api;
 pub mod media_api;

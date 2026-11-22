@@ -15,7 +15,7 @@ src/apis/integrations_forms_api.rs
 src/apis/integrations_google_analytics_api.rs
 src/apis/integrations_retargeting_pixels_api.rs
 src/apis/integrations_slack_api.rs
-src/apis/jobs_api.rs
+src/apis/link_jobs_api.rs
 src/apis/link_settings_api.rs
 src/apis/links_api.rs
 src/apis/media_api.rs
@@ -353,10 +353,6 @@ src/models/in_app_browser_details.rs
 src/models/integration_delivery.rs
 src/models/integration_visitor_data.rs
 src/models/invite_member_request.rs
-src/models/job.rs
-src/models/job_error.rs
-src/models/job_status.rs
-src/models/job_type.rs
 src/models/journey_progress.rs
 src/models/language_condition_outcome.rs
 src/models/language_condition_payload.rs
@@ -365,6 +361,10 @@ src/models/language_condition_trace_option.rs
 src/models/link.rs
 src/models/link_integration.rs
 src/models/link_integration_kind.rs
+src/models/link_job.rs
+src/models/link_job_error.rs
+src/models/link_job_status.rs
+src/models/link_job_type.rs
 src/models/link_setting.rs
 src/models/link_settings_service_update_body.rs
 src/models/link_sort_field.rs
