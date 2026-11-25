@@ -40,7 +40,9 @@ src/models/agent_claim_status.rs
 src/models/agent_guardrail.rs
 src/models/agent_guardrail_list.rs
 src/models/agent_guardrail_preset.rs
-src/models/agent_knowledge_document.rs
+src/models/agent_knowledge_item.rs
+src/models/agent_knowledge_item_kind.rs
+src/models/agent_knowledge_item_status.rs
 src/models/agent_limits.rs
 src/models/agent_question_handling.rs
 src/models/agent_question_handling_preset.rs
@@ -51,9 +53,9 @@ src/models/agent_role_preset.rs
 src/models/agent_tone.rs
 src/models/agent_tone_preset.rs
 src/models/agent_usage.rs
-src/models/agents_service_create_knowledge_document_body.rs
+src/models/agents_service_create_knowledge_item_body.rs
 src/models/agents_service_update_body.rs
-src/models/agents_service_update_knowledge_document_body.rs
+src/models/agents_service_update_knowledge_item_body.rs
 src/models/analytics_dashboard.rs
 src/models/analytics_dashboards_service_generate_widget_summary_body.rs
 src/models/analytics_dashboards_service_update_body.rs
@@ -147,7 +149,7 @@ src/models/country_condition_outcome.rs
 src/models/country_condition_payload.rs
 src/models/country_condition_trace_data.rs
 src/models/country_condition_trace_option.rs
-src/models/create_agent_knowledge_document_response.rs
+src/models/create_agent_knowledge_item_response.rs
 src/models/create_agent_request.rs
 src/models/create_agent_response.rs
 src/models/create_bulk_links_request.rs
@@ -497,6 +499,7 @@ src/models/qrcode_template_scope.rs
 src/models/qrcode_templates_service_update_body.rs
 src/models/redirect_trace_data.rs
 src/models/redirect_trace_data_fallback_reason.rs
+src/models/refresh_agent_knowledge_item_response.rs
 src/models/render_qrcode_images_response.rs
 src/models/rendered_qrcode.rs
 src/models/replace_media_import_response.rs
@@ -577,7 +580,7 @@ src/models/traffic_split_variant.rs
 src/models/traffic_split_variant_result.rs
 src/models/triggered_by.rs
 src/models/type_date.rs
-src/models/update_agent_knowledge_document_response.rs
+src/models/update_agent_knowledge_item_response.rs
 src/models/update_agent_response.rs
 src/models/update_contact_connection_response.rs
 src/models/update_custom_domain_response.rs
@@ -657,6 +660,7 @@ src/models/workflow_step_branch.rs
 src/models/workflow_step_copy_notice.rs
 src/models/workflow_step_copy_notice_type.rs
 src/models/workflow_step_kind.rs
+src/models/workflow_step_media.rs
 src/models/workflow_step_node_type.rs
 src/models/workflow_step_payload.rs
 src/models/workflow_steps_document.rs
@@ -664,6 +668,7 @@ src/models/workflow_steps_document_edge.rs
 src/models/workflow_steps_document_entry.rs
 src/models/workflow_steps_document_media.rs
 src/models/workflow_steps_document_step.rs
+src/models/workflow_steps_document_step_media.rs
 src/models/workflow_steps_service_connect_body.rs
 src/models/workflow_steps_service_create_body.rs
 src/models/workflow_steps_service_export_body.rs
