@@ -259,6 +259,7 @@ src/models/events_service_create_trace_body.rs
 src/models/events_service_update_device_body.rs
 src/models/events_time_series.rs
 src/models/events_time_series_data.rs
+src/models/export_workflow_steps_response.rs
 src/models/find_matching_page_theme_template_response.rs
 src/models/firing_retargeting_pixel.rs
 src/models/font_config.rs
@@ -348,6 +349,8 @@ src/models/import_page_theme_template_request.rs
 src/models/import_page_theme_template_response.rs
 src/models/import_qrcode_template_request.rs
 src/models/import_qrcode_template_response.rs
+src/models/import_workflow_steps_response.rs
+src/models/imported_workflow_step.rs
 src/models/in_app_browser.rs
 src/models/in_app_browser_details.rs
 src/models/integration_delivery.rs
@@ -651,11 +654,20 @@ src/models/widget_visualization.rs
 src/models/workflow_issue.rs
 src/models/workflow_step.rs
 src/models/workflow_step_branch.rs
+src/models/workflow_step_copy_notice.rs
+src/models/workflow_step_copy_notice_type.rs
 src/models/workflow_step_kind.rs
 src/models/workflow_step_node_type.rs
 src/models/workflow_step_payload.rs
+src/models/workflow_steps_document.rs
+src/models/workflow_steps_document_edge.rs
+src/models/workflow_steps_document_entry.rs
+src/models/workflow_steps_document_media.rs
+src/models/workflow_steps_document_step.rs
 src/models/workflow_steps_service_connect_body.rs
 src/models/workflow_steps_service_create_body.rs
+src/models/workflow_steps_service_export_body.rs
+src/models/workflow_steps_service_import_body.rs
 src/models/workflow_steps_service_update_body.rs
 src/models/workspace.rs
 src/models/workspace_allowance.rs
